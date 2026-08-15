@@ -24,7 +24,7 @@ export function BrandSection() {
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-5">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="flex h-32 items-center justify-center border border-border">
+              <div key={i} className="flex h-32 items-center justify-center rounded-xl border border-border">
                 <Skeleton className="h-5 w-20" />
               </div>
             ))}
@@ -46,10 +46,10 @@ export function BrandSection() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="mb-10 text-center"
         >
-          <span className="mb-2 block font-mono text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
-            Elite watchmakers
+          <span className="mb-2 block font-mono text-[11px] uppercase tracking-[0.3em] text-primary">
+            Leading Tech Brands
           </span>
-          <h2 className="font-display text-3xl italic tracking-tight text-foreground sm:text-4xl">
+          <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Shop by brand
           </h2>
         </motion.div>
@@ -75,21 +75,21 @@ export function BrandSection() {
               >
                 <Link
                   href={`/shop?brand=${slug}`}
-                  className="group relative flex h-32 flex-col items-center justify-center overflow-hidden border border-border bg-secondary/40 p-4 text-center transition-colors duration-300 hover:border-foreground sm:h-40"
+                  className="group relative flex h-32 flex-col items-center justify-center overflow-hidden rounded-xl border border-border bg-secondary/40 p-4 text-center transition-all duration-300 hover:scale-105 hover:border-primary hover:shadow-[0_0_20px_rgba(var(--primary),0.2)] sm:h-40"
                 >
                   {imageUrl && (
                     <div className="absolute inset-0 z-0 overflow-hidden">
                       <img
                         src={imageUrl}
                         alt={brand.name}
-                        className="h-full w-full object-cover grayscale opacity-40 transition-all duration-700 group-hover:scale-110 group-hover:opacity-55"
+                        className="h-full w-full object-cover opacity-60 transition-all duration-700 group-hover:scale-110 group-hover:opacity-90"
                       />
-                      <div className="absolute inset-0 bg-background/40" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-background/30" />
                     </div>
                   )}
 
                   <div className="relative z-10 flex w-full flex-col items-center">
-                    <span className="font-display text-lg italic tracking-tight text-foreground sm:text-xl">
+                    <span className="font-display text-lg font-bold tracking-tight text-foreground sm:text-xl">
                       {brand.name}
                     </span>
 

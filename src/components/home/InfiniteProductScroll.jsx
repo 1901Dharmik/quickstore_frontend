@@ -65,10 +65,10 @@ export function InfiniteProductScroll() {
     <section className="tick-track bg-background py-14 sm:py-16 lg:py-20">
       <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8">
         <div className="mb-10 text-center sm:mb-12">
-          <span className="mb-2 block font-mono text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+          <span className="mb-2 block font-mono text-[11px] uppercase tracking-[0.3em] text-primary">
             Full catalog
           </span>
-          <h2 className="font-display text-3xl italic tracking-tight text-foreground sm:text-4xl">
+          <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             The product collection
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground sm:text-base">
@@ -90,17 +90,17 @@ export function InfiniteProductScroll() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-40px' }}
               transition={{ duration: 0.45, delay: (i % 8) * 0.05, ease: [0.16, 1, 0.3, 1] }}
-              className="group flex h-full w-full flex-col border border-border bg-background transition-colors duration-300 hover:border-foreground"
+              className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:scale-[1.02] hover:border-primary hover:shadow-[0_0_20px_rgba(var(--primary),0.15)]"
             >
               <div className="relative block overflow-hidden border-b border-border bg-secondary">
                 <div className="pointer-events-none absolute left-2 top-2 z-10 flex flex-col gap-1.5 sm:left-3 sm:top-3">
                   {product.bestSeller && (
-                    <span className="bg-foreground px-2 py-1 font-mono text-[8px] font-semibold uppercase tracking-wider text-background sm:text-[9px]">
+                    <span className="rounded-full bg-primary px-2 py-1 font-mono text-[8px] font-bold uppercase tracking-wider text-primary-foreground shadow-sm sm:text-[9px]">
                       Bestseller
                     </span>
                   )}
                   {product.newArrival && (
-                    <span className="border border-foreground bg-background px-2 py-1 font-mono text-[8px] font-semibold uppercase tracking-wider text-foreground sm:text-[9px]">
+                    <span className="rounded-full border border-primary/20 bg-background px-2 py-1 font-mono text-[8px] font-bold uppercase tracking-wider text-foreground shadow-sm sm:text-[9px]">
                       New
                     </span>
                   )}
@@ -113,7 +113,7 @@ export function InfiniteProductScroll() {
                       alt={product.alt}
                       fill
                       sizes="(min-width: 1280px) 24vw, (min-width: 1024px) 32vw, 48vw"
-                      className="object-contain p-5 grayscale transition-transform duration-700 ease-out group-hover:scale-[1.04] sm:p-7"
+                      className="object-contain p-5  transition-transform duration-700 ease-out group-hover:scale-[1.04] sm:p-7"
                     />
                   </div>
                 </Link>
@@ -129,20 +129,20 @@ export function InfiniteProductScroll() {
                   <h6 className="font-mono text-xs font-medium text-foreground sm:text-sm">₹{product.price}</h6>
                 </div>
 
-                <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-border pt-3 sm:gap-x-5">
+                <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-border pt-3">
                   <button
                     onClick={(e) => {
                       e.preventDefault();
                       addToCartMutation.mutate({ product_id: product.id, quantity: 1 });
                     }}
                     disabled={addToCartMutation.isPending}
-                    className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground underline underline-offset-4 transition-opacity hover:opacity-60 disabled:opacity-30 sm:text-[11px]"
+                    className="rounded-full bg-primary/10 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-primary transition-all hover:bg-primary hover:text-primary-foreground disabled:opacity-50 sm:text-[11px]"
                   >
                     {addToCartMutation.isPending ? 'Adding…' : 'Add to cart'}
                   </button>
                   <Link
                     href={product.href}
-                    className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground underline underline-offset-4 transition-opacity hover:opacity-60 sm:text-[11px]"
+                    className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground underline-offset-4 transition-all hover:text-primary hover:underline sm:text-[11px]"
                   >
                     Know more
                   </Link>

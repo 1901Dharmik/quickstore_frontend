@@ -16,7 +16,7 @@ function CarouselCard({ card }) {
   };
 
   return (
-    <article className="group flex h-full w-full flex-col border border-border bg-background transition-colors duration-300 hover:border-foreground">
+    <article className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:border-primary hover:shadow-[0_0_20px_rgba(var(--primary),0.1)]">
       <Link href={card.href || '#'} className="relative block overflow-hidden border-b border-border bg-secondary">
         <div className="relative aspect-[1.15/1] overflow-hidden">
           <Image
@@ -24,7 +24,7 @@ function CarouselCard({ card }) {
             alt={card.alt}
             fill
             sizes="(min-width: 1536px) 24vw, (min-width: 1280px) 32vw, (min-width: 1024px) 33vw, (min-width: 640px) 48vw, 90vw"
-            className={`object-contain p-8 grayscale transition-transform duration-700 ease-out group-hover:scale-[1.04] ${card.imageClassName || ''}`}
+            className={`object-contain p-8  transition-transform duration-700 ease-out group-hover:scale-[1.04] ${card.imageClassName || ''}`}
           />
         </div>
       </Link>
@@ -121,7 +121,7 @@ export default function ExploreCarouselSection({
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="max-w-2xl"
           >
-            <h2 className="font-display text-3xl italic tracking-tight text-foreground sm:text-4xl">{title}</h2>
+            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{title}</h2>
             {description ? (
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">{description}</p>
             ) : null}
@@ -140,7 +140,7 @@ export default function ExploreCarouselSection({
               <button
                 type="button"
                 onClick={() => scroll('left')}
-                className="flex h-9 w-9 items-center justify-center border border-border text-foreground transition-colors hover:border-foreground hover:bg-foreground hover:text-background"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md"
                 aria-label="Scroll left"
               >
                 <ArrowLeft className="h-4 w-4" />
@@ -148,7 +148,7 @@ export default function ExploreCarouselSection({
               <button
                 type="button"
                 onClick={() => scroll('right')}
-                className="flex h-9 w-9 items-center justify-center border border-border text-foreground transition-colors hover:border-foreground hover:bg-foreground hover:text-background"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md"
                 aria-label="Scroll right"
               >
                 <ArrowRight className="h-4 w-4" />

@@ -85,7 +85,7 @@ export default function OrderSummary({ cart, onCouponApplied }) {
               <div key={item._id} className="flex items-center gap-3 px-5 py-4">
                 <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden border border-border bg-secondary">
                   {thumbnail ? (
-                    <Image src={thumbnail} alt={title} fill className="object-contain p-1 grayscale" sizes="56px" />
+                    <Image src={thumbnail} alt={title} fill className="object-contain p-1 " sizes="56px" />
                   ) : (
                     <ShoppingBag className="h-5 w-5 text-muted-foreground" />
                   )}

@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
  * A small ticking sub-dial — the page's signature motif. A watch's defining
  * trait is that it never stops moving; this repeats that idea in miniature
  * wherever it appears (header mark, hero, footer) instead of a static logo.
- * Pure grayscale, no color — motion carries the distinction instead.
+ * Pure , no color — motion carries the distinction instead.
  */
 export function RunningSeconds({ size = 20, label, className = "" }) {
   return (

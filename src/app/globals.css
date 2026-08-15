@@ -7,10 +7,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-inter);
-  --font-display: var(--font-instrument-serif);
+  --font-sans: var(--font-rubik);
+  --font-mono: var(--font-rubik);
+  --font-heading: var(--font-rubik);
+  --font-display: var(--font-rubik);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -52,104 +52,92 @@
 }
 
 /*
-  QuickStore — "Movement" theme
-  Strict grayscale palette, referencing a watch dial: printer's-ink black,
-  paper white, and a scale of mechanical grays in between. No hue anywhere
-  (chroma pinned at 0) — every tone is true black, true white, or neutral gray.
-  Corners are square (radius 0) to read like case hardware, not software.
+  QuickStore — "Vibrant Tech" theme
+  A premium, colorful palette tailored for modern smartwatches.
+  Features a crisp white light mode with electric blue accents,
+  and a deep indigo dark mode. Rounded corners give it a fluid software feel.
 */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.09 0 0);
+  --background: oklch(0.98 0.01 250);
+  --foreground: oklch(0.15 0.02 250);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.09 0 0);
+  --card-foreground: oklch(0.15 0.02 250);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.09 0 0);
-  --primary: oklch(0.09 0 0);
+  --popover-foreground: oklch(0.15 0.02 250);
+  --primary: oklch(0.55 0.25 260); /* Vibrant Electric Blue */
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.96 0 0);
-  --secondary-foreground: oklch(0.09 0 0);
-  --muted: oklch(0.95 0 0);
-  --muted-foreground: oklch(0.44 0 0);
-  --accent: oklch(0.95 0 0);
-  --accent-foreground: oklch(0.09 0 0);
-  --destructive: oklch(0.4 0 0);
-  --border: oklch(0.87 0 0);
-  --input: oklch(0.87 0 0);
-  --ring: oklch(0.09 0 0);
-  --gold: oklch(0.44 0 0);
-  --gold-light: oklch(0.7 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.7 0 0);
-  --chart-3: oklch(0.556 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.19 0 0);
-  --radius: 0rem;
+  --secondary: oklch(0.95 0.02 250);
+  --secondary-foreground: oklch(0.2 0.05 260);
+  --muted: oklch(0.95 0.02 250);
+  --muted-foreground: oklch(0.5 0.02 250);
+  --accent: oklch(0.93 0.04 250);
+  --accent-foreground: oklch(0.15 0.05 260);
+  --destructive: oklch(0.55 0.2 25);
+  --border: oklch(0.85 0.02 250);
+  --input: oklch(0.85 0.02 250);
+  --ring: oklch(0.55 0.25 260);
+  --gold: oklch(0.7 0.15 70);
+  --gold-light: oklch(0.85 0.1 70);
+  --chart-1: oklch(0.6 0.2 260);
+  --chart-2: oklch(0.55 0.25 280);
+  --chart-3: oklch(0.5 0.3 300);
+  --chart-4: oklch(0.45 0.3 320);
+  --chart-5: oklch(0.4 0.3 340);
+  --radius: 0.75rem;
   --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.09 0 0);
-  --sidebar-primary: oklch(0.09 0 0);
+  --sidebar-foreground: oklch(0.15 0.02 250);
+  --sidebar-primary: oklch(0.55 0.25 260);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.95 0 0);
-  --sidebar-accent-foreground: oklch(0.09 0 0);
-  --sidebar-border: oklch(0.87 0 0);
-  --sidebar-ring: oklch(0.09 0 0);
+  --sidebar-accent: oklch(0.93 0.04 250);
+  --sidebar-accent-foreground: oklch(0.15 0.05 260);
+  --sidebar-border: oklch(0.85 0.02 250);
+  --sidebar-ring: oklch(0.55 0.25 260);
 }
 
 .dark {
-  --background: oklch(0.07 0 0);
-  --foreground: oklch(0.97 0 0);
-  --card: oklch(0.1 0 0);
-  --card-foreground: oklch(0.97 0 0);
-  --popover: oklch(0.1 0 0);
-  --popover-foreground: oklch(0.97 0 0);
-  --primary: oklch(0.97 0 0);
-  --primary-foreground: oklch(0.09 0 0);
-  --secondary: oklch(0.16 0 0);
-  --secondary-foreground: oklch(0.97 0 0);
-  --muted: oklch(0.16 0 0);
-  --muted-foreground: oklch(0.65 0 0);
-  --accent: oklch(0.18 0 0);
-  --accent-foreground: oklch(0.97 0 0);
-  --destructive: oklch(0.75 0 0);
-  --border: oklch(1 0 0 / 14%);
-  --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.8 0 0);
-  --gold: oklch(0.72 0 0);
-  --gold-light: oklch(0.85 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.7 0 0);
-  --chart-3: oklch(0.556 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.1 0 0);
-  --sidebar-foreground: oklch(0.97 0 0);
-  --sidebar-primary: oklch(0.97 0 0);
-  --sidebar-primary-foreground: oklch(0.09 0 0);
-  --sidebar-accent: oklch(0.18 0 0);
-  --sidebar-accent-foreground: oklch(0.97 0 0);
-  --sidebar-border: oklch(1 0 0 / 14%);
-  --sidebar-ring: oklch(0.8 0 0);
+  --background: oklch(0.15 0.05 260); /* Deep Indigo */
+  --foreground: oklch(0.98 0.02 250);
+  --card: oklch(0.18 0.06 260);
+  --card-foreground: oklch(0.98 0.02 250);
+  --popover: oklch(0.18 0.06 260);
+  --popover-foreground: oklch(0.98 0.02 250);
+  --primary: oklch(0.6 0.25 260); /* Brighter Electric Blue */
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.22 0.08 260);
+  --secondary-foreground: oklch(0.98 0.02 250);
+  --muted: oklch(0.22 0.08 260);
+  --muted-foreground: oklch(0.7 0.04 250);
+  --accent: oklch(0.25 0.1 260);
+  --accent-foreground: oklch(0.98 0.02 250);
+  --destructive: oklch(0.55 0.2 25);
+  --border: oklch(0.3 0.05 260);
+  --input: oklch(0.3 0.05 260);
+  --ring: oklch(0.6 0.25 260);
+  --gold: oklch(0.7 0.15 70);
+  --gold-light: oklch(0.85 0.1 70);
+  --chart-1: oklch(0.6 0.2 260);
+  --chart-2: oklch(0.55 0.25 280);
+  --chart-3: oklch(0.5 0.3 300);
+  --chart-4: oklch(0.45 0.3 320);
+  --chart-5: oklch(0.4 0.3 340);
+  --sidebar: oklch(0.18 0.06 260);
+  --sidebar-foreground: oklch(0.98 0.02 250);
+  --sidebar-primary: oklch(0.6 0.25 260);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.25 0.1 260);
+  --sidebar-accent-foreground: oklch(0.98 0.02 250);
+  --sidebar-border: oklch(0.3 0.05 260);
+  --sidebar-ring: oklch(0.6 0.25 260);
 }
 
-/* Minute-track divider — a hairline rule with tick marks, like the
-   outer track of a watch dial. Used between major sections instead of
-   a plain border so structure itself nods to the subject matter. */
+/* Modern soft border divider */
 .tick-track {
-  background-image: repeating-linear-gradient(
-    90deg,
-    var(--border) 0,
-    var(--border) 1px,
-    transparent 1px,
-    transparent 12px
-  );
-  background-position: 0 0;
-  background-size: 100% 5px;
-  background-repeat: no-repeat;
-  border-top: 1px solid var(--border);
+  border-top: 1px dashed var(--border);
+  background: transparent;
 }
 
 .font-display {
-  font-family: var(--font-instrument-serif), serif;
+  font-family: var(--font-rubik), sans-serif;
 }
 
 @layer base {
@@ -157,7 +145,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground selection:bg-primary/20 selection:text-primary;
   }
   html {
     @apply font-sans;

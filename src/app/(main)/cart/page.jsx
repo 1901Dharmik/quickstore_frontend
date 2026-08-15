@@ -106,7 +106,7 @@ export default function CartPage() {
                   <div key={item._id} className="flex gap-5 border-b border-border py-7 sm:gap-7">
                     <div className="relative h-28 w-28 shrink-0 border border-border bg-secondary sm:h-36 sm:w-36">
                       {thumbnail ? (
-                        <Image src={thumbnail} alt={title} fill className="object-contain p-4 grayscale" sizes="144px" />
+                        <Image src={thumbnail} alt={title} fill className="object-contain p-4 " sizes="144px" />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center">
                           <ShoppingBag className="h-6 w-6 text-muted-foreground" />

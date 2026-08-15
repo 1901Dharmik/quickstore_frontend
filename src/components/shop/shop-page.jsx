@@ -72,7 +72,7 @@ function ProductCard({ product }) {
               alt={product.title}
               fill
               sizes="(min-width: 1280px) 24vw, (min-width: 1024px) 32vw, 48vw"
-              className="object-contain p-6 grayscale transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+              className="object-contain p-6  transition-transform duration-700 ease-out group-hover:scale-[1.04]"
             />
           </div>
         </Link>

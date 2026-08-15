@@ -1,26 +1,15 @@
-import { Inter, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { Rubik } from "next/font/google";
 import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import QueryProvider from "@/components/providers/QueryProvider";
 import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "@/components/ui/sonner";
 
-const inter = Inter({
-  variable: "--font-inter",
+const rubik = Rubik({
+  variable: "--font-rubik",
   subsets: ["latin"],
-});
-
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  subsets: ["latin"],
-  weight: ["400"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
   style: ["normal", "italic"],
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
 });
 
 export const metadata = {
@@ -33,10 +22,10 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${rubik.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col font-sans">
         <QueryProvider>
           <AuthProvider>
             <TooltipProvider>

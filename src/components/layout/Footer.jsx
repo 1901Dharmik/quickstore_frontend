@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { RunningSeconds } from '@/components/ui/running-seconds';
 
 const Facebook = ({ className }) => (
   <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -75,9 +74,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr] lg:gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <Link href="/" className="inline-flex items-center gap-2.5">
-              <RunningSeconds size={20} className="text-foreground" />
-              <span className="font-display text-2xl italic tracking-tight text-foreground">QuickStore</span>
+            <Link href="/" className="inline-flex items-center gap-2">
+              <img src="/logo-icon.jpg" alt="QuickStore Icon" className="h-8 w-auto dark:invert" />
+              <img src="/logo.jpg" alt="QuickStore" className="h-7 w-auto dark:invert" />
             </Link>
             <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
               Curated timepieces for collectors — precision movements and considered design, delivered.

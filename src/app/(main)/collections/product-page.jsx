@@ -148,7 +148,7 @@ export default function ProductPage({ productId, initialData }) {
                         fill
                         priority={idx === 0}
                         sizes="(min-width: 1024px) 50vw, 100vw"
-                        className="object-contain p-8 grayscale"
+                        className="object-contain p-8 "
                       />
                     </div>
                   </CarouselItem>
@@ -173,7 +173,7 @@ export default function ProductPage({ productId, initialData }) {
                     )}
                     aria-label={`Go to image ${idx + 1}`}
                   >
-                    <Image src={img} alt="" fill sizes="10vw" className="object-contain p-1 grayscale" />
+                    <Image src={img} alt="" fill sizes="10vw" className="object-contain p-1 " />
                   </button>
                 ))}
               </div>
@@ -315,7 +315,7 @@ export default function ProductPage({ productId, initialData }) {
                   <article key={item._id} className="group border border-border bg-background transition-colors hover:border-foreground">
                     <Link href={`/product/${item.slug || item._id}`} className="relative block overflow-hidden border-b border-border bg-secondary">
                       <div className="relative aspect-square overflow-hidden">
-                        <Image src={rImg} alt={item.title} fill sizes="25vw" className="object-contain p-5 grayscale transition-transform duration-700 group-hover:scale-[1.04]" />
+                        <Image src={rImg} alt={item.title} fill sizes="25vw" className="object-contain p-5  transition-transform duration-700 group-hover:scale-[1.04]" />
                       </div>
                     </Link>
                     <div className="px-4 py-4">

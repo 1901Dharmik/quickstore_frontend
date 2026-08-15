@@ -130,7 +130,7 @@ const Header = () => {
             </SheetTrigger>
             <SheetContent side="left" className="w-[85vw] max-w-xs border-r border-border bg-background p-0 sm:max-w-sm">
               <div className="flex h-16 items-center justify-between border-b border-border px-5">
-                <RunningSeconds size={18} label="QuickStore" className="text-foreground" />
+                <img src="/logo.jpg" alt="QuickStore" className="h-6 w-auto dark:invert" />
                 <SheetClose asChild>
                   <button className="p-2 text-foreground" aria-label="Close menu">
                     <X className="h-5 w-5" />
@@ -142,7 +142,7 @@ const Header = () => {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="border-b border-border px-3 py-4 font-display text-2xl italic tracking-tight text-foreground transition-opacity last:border-b-0 hover:opacity-60"
+                    className="border-b border-border px-3 py-4 font-display text-2xl font-bold tracking-tight text-foreground transition-all last:border-b-0 hover:text-primary"
                   >
                     {link.label}
                   </Link>
@@ -153,13 +153,13 @@ const Header = () => {
                   <>
                     <Link
                       href="/auth/login"
-                      className="flex items-center justify-center border border-foreground py-3 font-mono text-xs uppercase tracking-[0.2em] text-foreground"
+                      className="flex items-center justify-center rounded-md border border-border py-3 font-mono text-xs uppercase tracking-[0.2em] text-foreground transition-all hover:border-primary hover:text-primary"
                     >
                       Log in
                     </Link>
                     <Link
                       href="/auth/register"
-                      className="flex items-center justify-center bg-foreground py-3 font-mono text-xs uppercase tracking-[0.2em] text-background"
+                      className="flex items-center justify-center rounded-md bg-primary py-3 font-mono text-xs uppercase tracking-[0.2em] text-primary-foreground shadow-sm transition-all hover:bg-primary/90"
                     >
                       Create account
                     </Link>
@@ -177,10 +177,14 @@ const Header = () => {
           </Sheet>
 
           <Link href="/" className="flex items-center pl-1 sm:pl-2">
-            <RunningSeconds size={22} className="hidden text-foreground sm:inline-flex" />
-            <span className="ml-0 font-display text-2xl italic tracking-tight text-foreground sm:ml-2.5 sm:text-[1.75rem]">
-              QuickStore
-            </span>
+            {/* Mobile Logo (Icon Only) */}
+            <img src="/logo-icon.jpg" alt="QuickStore Icon" className="h-8 w-auto dark:invert sm:hidden" />
+            
+            {/* Desktop Logo (Icon + Text) */}
+            <div className="hidden items-center gap-2 sm:flex">
+              <img src="/logo-icon.jpg" alt="QuickStore Icon" className="h-7 w-auto dark:invert" />
+              <img src="/logo.jpg" alt="QuickStore" className="h-6 w-auto dark:invert" />
+            </div>
           </Link>
         </div>
 
@@ -287,7 +291,7 @@ const Header = () => {
                         onSelect={() => handleSelectProduct(product.slug || product._id || product.id)}
                       >
                         <div className="flex items-center gap-3">
-                          <img src={thumbnail} alt={product.title} className="h-8 w-8 grayscale object-cover" />
+                          <img src={thumbnail} alt={product.title} className="h-8 w-8  object-cover" />
                           <div className="flex flex-col">
                             <span className="text-sm font-medium">{product.title}</span>
                             <span className="font-mono text-xs text-muted-foreground">{formattedPrice}</span>

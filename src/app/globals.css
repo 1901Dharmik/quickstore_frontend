@@ -1,0 +1,408 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-inter);
+  --font-display: var(--font-instrument-serif);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+  QuickStore — "Movement" theme
+  Strict grayscale palette, referencing a watch dial: printer's-ink black,
+  paper white, and a scale of mechanical grays in between. No hue anywhere
+  (chroma pinned at 0) — every tone is true black, true white, or neutral gray.
+  Corners are square (radius 0) to read like case hardware, not software.
+*/
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.09 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.09 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.09 0 0);
+  --primary: oklch(0.09 0 0);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.09 0 0);
+  --muted: oklch(0.95 0 0);
+  --muted-foreground: oklch(0.44 0 0);
+  --accent: oklch(0.95 0 0);
+  --accent-foreground: oklch(0.09 0 0);
+  --destructive: oklch(0.4 0 0);
+  --border: oklch(0.87 0 0);
+  --input: oklch(0.87 0 0);
+  --ring: oklch(0.09 0 0);
+  --gold: oklch(0.44 0 0);
+  --gold-light: oklch(0.7 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.7 0 0);
+  --chart-3: oklch(0.556 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.19 0 0);
+  --radius: 0rem;
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.09 0 0);
+  --sidebar-primary: oklch(0.09 0 0);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.95 0 0);
+  --sidebar-accent-foreground: oklch(0.09 0 0);
+  --sidebar-border: oklch(0.87 0 0);
+  --sidebar-ring: oklch(0.09 0 0);
+}
+
+.dark {
+  --background: oklch(0.07 0 0);
+  --foreground: oklch(0.97 0 0);
+  --card: oklch(0.1 0 0);
+  --card-foreground: oklch(0.97 0 0);
+  --popover: oklch(0.1 0 0);
+  --popover-foreground: oklch(0.97 0 0);
+  --primary: oklch(0.97 0 0);
+  --primary-foreground: oklch(0.09 0 0);
+  --secondary: oklch(0.16 0 0);
+  --secondary-foreground: oklch(0.97 0 0);
+  --muted: oklch(0.16 0 0);
+  --muted-foreground: oklch(0.65 0 0);
+  --accent: oklch(0.18 0 0);
+  --accent-foreground: oklch(0.97 0 0);
+  --destructive: oklch(0.75 0 0);
+  --border: oklch(1 0 0 / 14%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.8 0 0);
+  --gold: oklch(0.72 0 0);
+  --gold-light: oklch(0.85 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.7 0 0);
+  --chart-3: oklch(0.556 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.1 0 0);
+  --sidebar-foreground: oklch(0.97 0 0);
+  --sidebar-primary: oklch(0.97 0 0);
+  --sidebar-primary-foreground: oklch(0.09 0 0);
+  --sidebar-accent: oklch(0.18 0 0);
+  --sidebar-accent-foreground: oklch(0.97 0 0);
+  --sidebar-border: oklch(1 0 0 / 14%);
+  --sidebar-ring: oklch(0.8 0 0);
+}
+
+/* Minute-track divider — a hairline rule with tick marks, like the
+   outer track of a watch dial. Used between major sections instead of
+   a plain border so structure itself nods to the subject matter. */
+.tick-track {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--border) 0,
+    var(--border) 1px,
+    transparent 1px,
+    transparent 12px
+  );
+  background-position: 0 0;
+  background-size: 100% 5px;
+  background-repeat: no-repeat;
+  border-top: 1px solid var(--border);
+}
+
+.font-display {
+  font-family: var(--font-instrument-serif), serif;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}
+
+@layer utilities {
+  .text-gold {
+    color: var(--gold);
+  }
+  .bg-gold {
+    background-color: var(--gold);
+  }
+  .border-gold {
+    border-color: var(--gold);
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .letter-widest-xl {
+    letter-spacing: 0.3em;
+  }
+}
+
+
+/* Responsive Typography System (from Figma 9905:814) */
+  h1,
+  .text-h1 {
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 600;
+  }
+
+  h2,
+  .text-h2 {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 600;
+  }
+
+  h3,
+  .text-h3 {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 600;
+  }
+
+  h4,
+  .text-h4 {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
+  }
+
+  p,
+  .text-paragraph {
+    font-size: 12px;
+    line-height: 20px;
+    font-weight: 400;
+  }
+
+  .underline,
+  .text-underline {
+    font-size: 12px;
+    line-height: 20px;
+    font-weight: 400;
+    text-decoration: underline;
+  }
+
+  .text-info {
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 400;
+  }
+
+  /* Base Desktop (1366px - 1600px) */
+  @media (min-width: 1366px) {
+
+    h1,
+    .text-h1 {
+      font-size: 32px;
+      line-height: 46px;
+    }
+
+    h2,
+    .text-h2 {
+      font-size: 28px;
+      line-height: 38px;
+    }
+
+    h3,
+    .text-h3 {
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    h4,
+    .text-h4 {
+      font-size: 20px;
+      line-height: 28px;
+    }
+
+    h5,
+    .text-h5 {
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 600;
+    }
+
+    h6,
+    .text-h6 {
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 600;
+    }
+
+    p,
+    .text-paragraph {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .underline,
+    .text-underline {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .text-info {
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+
+  /* Large Desktop (1600px - 1920px) */
+  @media (min-width: 1600px) {
+
+    h1,
+    .text-h1 {
+      font-size: 32px;
+      line-height: 46px;
+    }
+
+    h2,
+    .text-h2 {
+      font-size: 28px;
+      line-height: 38px;
+    }
+
+    h3,
+    .text-h3 {
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    h4,
+    .text-h4 {
+      font-size: 20px;
+      line-height: 28px;
+    }
+
+    h5,
+    .text-h5 {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    h6,
+    .text-h6 {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    p,
+    .text-paragraph {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .underline,
+    .text-underline {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .text-info {
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+
+  /* Ultra-Wide Desktop (1920px Above) */
+  @media (min-width: 1920px) {
+
+    h1,
+    .text-h1 {
+      font-size: 38px;
+      line-height: 46px;
+    }
+
+    h2,
+    .text-h2 {
+      font-size: 30px;
+      line-height: 38px;
+    }
+
+    h3,
+    .text-h3 {
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    h4,
+    .text-h4 {
+      font-size: 20px;
+      line-height: 28px;
+    }
+
+    h5,
+    .text-h5 {
+      font-size: 16px;
+      line-height: 24px;
+    }
+
+    h6,
+    .text-h6 {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    p,
+    .text-paragraph {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .underline,
+    .text-underline {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .text-info {
+      font-size: 12px;
+      line-height: 18px;
+    }
+  }
+

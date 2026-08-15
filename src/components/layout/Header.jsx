@@ -43,6 +43,11 @@ const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const down = (e) => {
@@ -210,9 +215,13 @@ const Header = () => {
 
           {/* Mobile Actions */}
           <div className="flex sm:hidden items-center gap-1 ml-1">
-            <Link href={isAuthenticated ? "/profile" : "/auth/login"} className="p-2 text-black transition-colors hover:bg-[#f5f5f5] rounded-full">
-              <User className="h-5 w-5" />
-            </Link>
+            {!isMounted ? (
+              <div className="p-2 w-9 h-9" />
+            ) : (
+              <Link href={isAuthenticated ? "/profile" : "/auth/login"} className="p-2 text-black transition-colors hover:bg-[#f5f5f5] rounded-full">
+                <User className="h-5 w-5" />
+              </Link>
+            )}
             <Link href="/cart" className="relative p-2 text-black transition-colors hover:bg-[#f5f5f5] rounded-full">
               <ShoppingCart className="h-5 w-5" />
               {cartCount > 0 && (
@@ -225,7 +234,9 @@ const Header = () => {
 
           {/* Desktop Actions */}
           <div className="hidden sm:flex items-center gap-3 ml-2">
-            {!isAuthenticated ? (
+            {!isMounted ? (
+              <div className="w-32 h-9" />
+            ) : !isAuthenticated ? (
               <>
                 <Link
                   href="/auth/register"

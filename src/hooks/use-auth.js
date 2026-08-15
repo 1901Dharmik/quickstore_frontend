@@ -24,10 +24,30 @@ export const useLogin = () => {
       fetchProfile();
       mergeCartMutation.mutate();
       toast.success('Successfully signed in!');
-      router.push('/'); 
+      window.location.href = '/'; 
     },
     onError: (error) => {
       toast.error(error?.response?.data?.message || 'Failed to sign in. Please check your credentials.');
+    }
+  });
+};
+
+export const useGoogleLoginMutation = () => {
+  const { fetchProfile } = useAuthContext();
+  const router = useRouter();
+  const mergeCartMutation = useMergeCart();
+
+  return useMutation({
+    mutationFn: authApi.googleLogin,
+    onSuccess: (data) => {
+      saveTokens(data.user || data);
+      fetchProfile();
+      mergeCartMutation.mutate();
+      toast.success('Successfully signed in with Google!');
+      window.location.href = '/'; 
+    },
+    onError: (error) => {
+      toast.error(error?.response?.data?.message || 'Failed to sign in with Google.');
     }
   });
 };

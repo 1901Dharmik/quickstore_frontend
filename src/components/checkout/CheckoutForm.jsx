@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Lock, Truck, Smartphone, ChevronRight } from "lucide-react";
+import { ArrowLeft, Lock, Truck, Smartphone, ChevronRight, MapPin, Plus, Check } from "lucide-react";
 import { usePlaceOrder } from "@/hooks/use-order";
+import { useUser } from "@/hooks/use-auth";
+import { useAddresses } from "@/hooks/use-user-data";
 
 function Field({ label, id, ...props }) {
   return (
@@ -25,12 +27,42 @@ const STEPS = ["Shipping", "Payment", "Review"];
 export default function CheckoutForm({ onSuccess, coupon }) {
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({});
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
+  const [showNewAddressForm, setShowNewAddressForm] = useState(false);
+
+  const { user } = useUser();
+  const { data: addressesRes, isLoading: isLoadingAddresses } = useAddresses();
+  const addresses = addressesRes?.data || [];
+  const defaultAddress = addresses.find(a => a.is_default);
+
   const { mutateAsync: placeOrder, isPending } = usePlaceOrder();
 
+  // Preselect default address when loaded
+  if (user && addresses.length > 0 && !selectedAddressId && !showNewAddressForm) {
+    setSelectedAddressId(defaultAddress?._id || addresses[0]._id);
+  }
+
   const handleShipping = (e) => {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    setFormData(Object.fromEntries(fd.entries()));
+    if (e && e.preventDefault) e.preventDefault();
+    
+    if (user && selectedAddressId && !showNewAddressForm) {
+      const selected = addresses.find(a => a._id === selectedAddressId);
+      if (selected) {
+        setFormData({
+          first_name: selected.first_name,
+          last_name: selected.last_name,
+          email: selected.email || user.email || '',
+          phone: selected.phone,
+          address: selected.address,
+          city: selected.city,
+          state: selected.state,
+          pincode: selected.pincode,
+        });
+      }
+    } else if (e && e.target) {
+      const fd = new FormData(e.target);
+      setFormData(Object.fromEntries(fd.entries()));
+    }
     setStep(1);
   };
 
@@ -91,30 +123,105 @@ export default function CheckoutForm({ onSuccess, coupon }) {
       {/* ── Step 0 — Shipping ── */}
       {step === 0 && (
         <form onSubmit={handleShipping} className="space-y-6">
-          <p className="mb-6 border-b border-[#e5e5e5] pb-4 font-sans text-[18px] font-medium text-black">
-            Delivery Information
-          </p>
-          <div className="grid grid-cols-2 gap-4">
-            <Field label="First Name" id="first_name" name="first_name" type="text" placeholder="Jane" defaultValue={formData.first_name} required />
-            <Field label="Last Name" id="last_name" name="last_name" type="text" placeholder="Doe" defaultValue={formData.last_name} required />
+          <div className="flex items-center justify-between border-b border-[#e5e5e5] pb-4">
+            <p className="font-sans text-[18px] font-medium text-black">
+              Delivery Information
+            </p>
+            {user && addresses.length > 0 && showNewAddressForm && (
+              <button
+                type="button"
+                onClick={() => setShowNewAddressForm(false)}
+                className="text-[14px] text-[#737373] hover:text-black"
+              >
+                Use Saved Address
+              </button>
+            )}
           </div>
-          <Field label="Email Address" id="email" name="email" type="email" placeholder="jane@example.com" defaultValue={formData.email} />
-          <Field label="Phone Number" id="phone" name="phone" type="tel" placeholder="+91 98765 43210" defaultValue={formData.phone} required />
-          <Field label="Street Address" id="address" name="address" type="text" placeholder="123 Main St, Apt 4B" defaultValue={formData.address} required />
-          <div className="grid grid-cols-2 gap-4">
-            <Field label="City" id="city" name="city" type="text" placeholder="Mumbai" defaultValue={formData.city} required />
-            <Field label="PIN Code" id="pincode" name="pincode" type="text" placeholder="400001" defaultValue={formData.pincode} required maxLength="6" />
-          </div>
-          <Field label="State" id="state" name="state" type="text" placeholder="Maharashtra" defaultValue={formData.state} required />
 
-          <div className="flex items-center justify-between pt-4">
-            <Link href="/cart" className="flex items-center gap-2 font-sans text-[14px] text-[#737373] transition-colors hover:text-black">
-              <ArrowLeft className="h-4 w-4" /> Back to Cart
-            </Link>
-            <button type="submit" className="flex h-12 items-center justify-center gap-2 rounded-full bg-black px-8 font-sans text-[14px] font-medium text-white transition-opacity hover:opacity-80">
-              Continue <ChevronRight className="h-4 w-4" />
-            </button>
-          </div>
+          {user && addresses.length > 0 && !showNewAddressForm ? (
+            <div className="space-y-4">
+              {addresses.map((addr) => (
+                <div
+                  key={addr._id}
+                  onClick={() => setSelectedAddressId(addr._id)}
+                  className={`cursor-pointer rounded-xl border p-4 transition-all ${
+                    selectedAddressId === addr._id
+                      ? "border-black bg-[#fafafa]"
+                      : "border-[#e5e5e5] hover:border-[#a3a3a3]"
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#e5e5e5] bg-white">
+                      {selectedAddressId === addr._id && <div className="h-2.5 w-2.5 rounded-full bg-black" />}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-black">{addr.first_name} {addr.last_name}</p>
+                        {addr.is_default && (
+                          <span className="rounded bg-black px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-white">
+                            Default
+                          </span>
+                        )}
+                      </div>
+                      <p className="mt-1 text-[14px] text-[#737373] leading-relaxed">
+                        {addr.address}<br />
+                        {addr.city}, {addr.state} {addr.pincode}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedAddressId(null);
+                  setShowNewAddressForm(true);
+                }}
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#e5e5e5] p-4 text-[14px] font-medium text-[#737373] transition-colors hover:border-black hover:text-black"
+              >
+                <Plus className="h-4 w-4" /> Add New Address
+              </button>
+
+              <div className="flex items-center justify-between pt-4">
+                <Link href="/cart" className="flex items-center gap-2 font-sans text-[14px] text-[#737373] transition-colors hover:text-black">
+                  <ArrowLeft className="h-4 w-4" /> Back to Cart
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleShipping}
+                  disabled={!selectedAddressId}
+                  className="flex h-12 items-center justify-center gap-2 rounded-full bg-black px-8 font-sans text-[14px] font-medium text-white transition-opacity hover:opacity-80 disabled:opacity-50"
+                >
+                  Continue <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                <Field label="First Name" id="first_name" name="first_name" type="text" placeholder="Jane" defaultValue={formData.first_name} required />
+                <Field label="Last Name" id="last_name" name="last_name" type="text" placeholder="Doe" defaultValue={formData.last_name} required />
+              </div>
+              <Field label="Email Address" id="email" name="email" type="email" placeholder="jane@example.com" defaultValue={formData.email} />
+              <Field label="Phone Number" id="phone" name="phone" type="tel" placeholder="+91 98765 43210" defaultValue={formData.phone} required />
+              <Field label="Street Address" id="address" name="address" type="text" placeholder="123 Main St, Apt 4B" defaultValue={formData.address} required />
+              <div className="grid grid-cols-2 gap-4">
+                <Field label="City" id="city" name="city" type="text" placeholder="Mumbai" defaultValue={formData.city} required />
+                <Field label="PIN Code" id="pincode" name="pincode" type="text" placeholder="400001" defaultValue={formData.pincode} required maxLength="6" />
+              </div>
+              <Field label="State" id="state" name="state" type="text" placeholder="Maharashtra" defaultValue={formData.state} required />
+
+              <div className="flex items-center justify-between pt-4">
+                <Link href="/cart" className="flex items-center gap-2 font-sans text-[14px] text-[#737373] transition-colors hover:text-black">
+                  <ArrowLeft className="h-4 w-4" /> Back to Cart
+                </Link>
+                <button type="submit" className="flex h-12 items-center justify-center gap-2 rounded-full bg-black px-8 font-sans text-[14px] font-medium text-white transition-opacity hover:opacity-80">
+                  Continue <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          )}
         </form>
       )}
 

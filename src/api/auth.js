@@ -9,6 +9,14 @@ export const authApi = {
     }
     return data; 
   },
+  // Login with Google ID Token
+  googleLogin: async (token) => {
+    const { data } = await api.post('/auth/google', { token });
+    if (data?.token) {
+      localStorage.setItem('auth_token', data.token);
+    }
+    return data;
+  },
 
   // Register a new user
   register: async (userData) => {

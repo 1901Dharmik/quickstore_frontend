@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useLogin } from '@/hooks/use-auth';
 import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
+import { GoogleAuthButton } from '@/components/auth/google-auth-button';
 
 export function LoginForm() {
   const [email, setEmail] = useState('');
@@ -74,6 +75,14 @@ export function LoginForm() {
       >
         {loginMutation.isPending ? 'Logging in…' : 'Login'}
       </button>
+
+      <div className="relative flex items-center py-2">
+        <div className="flex-grow border-t border-[#e5e5e5]"></div>
+        <span className="mx-4 flex-shrink-0 font-sans text-[12px] font-medium text-[#a3a3a3]">OR</span>
+        <div className="flex-grow border-t border-[#e5e5e5]"></div>
+      </div>
+
+      <GoogleAuthButton />
 
       <p className="text-center font-sans text-[14px] text-[#737373]">
         Don't have an account?{' '}

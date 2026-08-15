@@ -1,15 +1,23 @@
-import { Rubik } from "next/font/google";
+import { Inter, Nunito, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import QueryProvider from "@/components/providers/QueryProvider";
 import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "@/components/ui/sonner";
 
-const rubik = Rubik({
-  variable: "--font-rubik",
+const inter = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
-  style: ["normal", "italic"],
+});
+
+const nunito = Nunito({
+  variable: "--font-display",
+  subsets: ["latin"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
 });
 
 export const metadata = {
@@ -22,10 +30,10 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${rubik.variable} h-full antialiased`}
+      className={`${inter.variable} ${nunito.variable} ${jetbrainsMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col font-sans">
+      <body className="min-h-full flex flex-col font-sans" suppressHydrationWarning>
         <QueryProvider>
           <AuthProvider>
             <TooltipProvider>

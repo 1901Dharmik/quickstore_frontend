@@ -3,7 +3,7 @@
 import { useDeferredValue, useEffect, useMemo, useState, startTransition } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { useAddToCart } from '@/hooks/use-cart';
 import { ArrowUpDown, PackageSearch, Search, X, SlidersHorizontal, RefreshCw } from 'lucide-react';
@@ -43,28 +43,24 @@ function matchesPriceBand(price, band) {
   }
 }
 
-function FilterSelect({ label, value, onChange, options }) {
+function FilterSelect({ value, onChange, options }) {
   return (
-    <div>
-      <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-        {label}
-      </label>
-      <select
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        className="w-full border border-border bg-background px-3 py-2.5 font-mono text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-foreground"
-      >
-        {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-      </select>
-    </div>
+    <select
+      value={value}
+      onChange={e => onChange(e.target.value)}
+      className="h-10 appearance-none rounded-full border-none bg-[#fafafa] px-4 py-2 pr-8 font-sans text-[14px] text-black cursor-pointer hover:bg-[#f5f5f5] focus:outline-none focus:ring-2 focus:ring-[rgba(59,130,246,0.5)] transition-colors"
+    >
+      {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+    </select>
   );
 }
 
 function ProductCard({ product }) {
   const addToCartMutation = useAddToCart();
+  const router = useRouter();
   return (
-    <article className="group flex h-full w-full flex-col border border-border bg-background transition-colors duration-300 hover:border-foreground">
-      <div className="relative block overflow-hidden border-b border-border bg-secondary">
+    <article className="group flex h-full w-full flex-col rounded-[12px] border border-[#e5e5e5] bg-white transition-shadow duration-300 hover:shadow-sm">
+      <div className="relative block overflow-hidden rounded-t-[12px] border-b border-[#e5e5e5] bg-white">
         <Link href={`/product/${product.slug || product.id}`} className="relative block">
           <div className="relative aspect-square overflow-hidden sm:aspect-[1.15/1]">
             <Image
@@ -72,7 +68,7 @@ function ProductCard({ product }) {
               alt={product.title}
               fill
               sizes="(min-width: 1280px) 24vw, (min-width: 1024px) 32vw, 48vw"
-              className="object-contain p-6  transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+              className="object-contain p-6 transition-transform duration-500 ease-out group-hover:scale-[1.02]"
             />
           </div>
         </Link>
@@ -80,26 +76,29 @@ function ProductCard({ product }) {
       <div className="flex flex-1 flex-col px-4 py-4 sm:px-5 sm:py-5">
         <div className="flex-1">
           <Link href={`/product/${product.slug || product.id}`}>
-            <h4 className="mb-2 text-sm font-medium leading-snug text-foreground transition-opacity group-hover:opacity-70 sm:text-base">
+            <h4 className="mb-1 font-sans text-[16px] font-medium leading-snug text-black transition-opacity hover:opacity-70">
               {product.title}
             </h4>
           </Link>
-          <p className="font-mono text-xs font-medium text-foreground sm:text-sm">{formatCurrency(product.price)}</p>
+          <p className="font-sans text-[16px] text-[#737373]">{formatCurrency(product.price)}</p>
         </div>
-        <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1.5 border-t border-border pt-3">
+        <div className="mt-4 flex flex-row gap-2 border-t border-[#e5e5e5] pt-4">
           <button
             onClick={e => { e.preventDefault(); addToCartMutation.mutate({ product_id: product.id, quantity: 1 }); }}
             disabled={addToCartMutation.isPending}
-            className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground underline underline-offset-4 transition-opacity hover:opacity-60 disabled:opacity-30 sm:text-[11px]"
+            className="flex h-9 flex-1 items-center justify-center rounded-full bg-black px-2 font-sans text-[13px] sm:text-[14px] font-medium text-white transition-colors hover:bg-[#090909] disabled:opacity-30"
           >
             {addToCartMutation.isPending ? 'Adding…' : 'Add to cart'}
           </button>
-          <Link
-            href={`/product/${product.slug || product.id}`}
-            className="font-mono text-[10px] uppercase tracking-[0.12em] text-foreground underline underline-offset-4 transition-opacity hover:opacity-60 sm:text-[11px]"
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              router.push(`/product/${product.slug || product.id}`);
+            }}
+            className="flex h-9 flex-1 items-center justify-center rounded-full border border-[#d4d4d4] bg-white px-2 font-sans text-[13px] sm:text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa]"
           >
             Know more
-          </Link>
+          </button>
         </div>
       </div>
     </article>
@@ -108,25 +107,22 @@ function ProductCard({ product }) {
 
 function ShopSkeleton() {
   return (
-    <main className="min-h-screen bg-background px-4 py-12 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-[1600px] space-y-10">
-        <div className="space-y-3">
-          <Skeleton className="h-3 w-28" />
-          <Skeleton className="h-12 w-2/3 max-w-xl" />
+    <main className="min-h-screen bg-white px-4 py-20 md:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1200px] space-y-10">
+        <div className="space-y-4">
+          <Skeleton className="h-10 w-2/3 max-w-xl rounded-full" />
         </div>
-        <div className="grid gap-10 lg:grid-cols-[240px_minmax(0,1fr)]">
-          <div className="space-y-5">
-            {[...Array(5)].map((_, i) => <Skeleton key={i} className="h-10 w-full" />)}
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="space-y-3">
-                <Skeleton className="aspect-square w-full" />
-                <Skeleton className="h-5 w-3/4" />
-                <Skeleton className="h-4 w-1/4" />
-              </div>
-            ))}
-          </div>
+        <div className="space-y-6">
+          <Skeleton className="h-10 w-full max-w-4xl rounded-full" />
+        </div>
+        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="space-y-4 rounded-[12px] border border-[#e5e5e5] p-4">
+              <Skeleton className="aspect-square w-full rounded-[8px]" />
+              <Skeleton className="h-5 w-3/4 rounded-full" />
+              <Skeleton className="h-4 w-1/4 rounded-full" />
+            </div>
+          ))}
         </div>
       </div>
     </main>
@@ -200,6 +196,11 @@ export default function ShopPage() {
   const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE));
   const visibleProducts = filteredProducts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   useEffect(() => { setPage(1); }, [deferredSearch, category, brand, priceBand, sortBy]);
 
   const activeFilters = [
@@ -214,70 +215,74 @@ export default function ShopPage() {
   if (loading && products.length === 0 && !isError) return <ShopSkeleton />;
 
   const Filters = (
-    <div className="space-y-5">
+    <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-center">
       <div className="relative">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+        <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#737373]" />
         <input
           value={search}
           onChange={e => startTransition(() => setSearch(e.target.value))}
-          placeholder="Search products…"
-          className="w-full border border-border bg-background py-2.5 pl-9 pr-3 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-foreground"
+          placeholder="Search..."
+          className="h-10 w-full lg:w-64 rounded-full border-none bg-[#fafafa] py-2 pl-11 pr-4 font-sans text-[14px] text-black placeholder:text-[#737373] hover:bg-[#f5f5f5] focus:outline-none focus:ring-2 focus:ring-[rgba(59,130,246,0.5)] transition-colors"
         />
       </div>
-      <FilterSelect label="Category" value={category} onChange={v => startTransition(() => setCategory(v))} options={categoryOptions} />
-      <FilterSelect label="Brand" value={brand} onChange={v => startTransition(() => setBrand(v))} options={brandOptions} />
-      <FilterSelect label="Price" value={priceBand} onChange={v => startTransition(() => setPriceBand(v))} options={PRICE_FILTERS} />
-      <FilterSelect label="Sort by" value={sortBy} onChange={v => startTransition(() => setSortBy(v))} options={SORT_OPTIONS} />
+      <FilterSelect value={category} onChange={v => startTransition(() => setCategory(v))} options={categoryOptions} />
+      <FilterSelect value={brand} onChange={v => startTransition(() => setBrand(v))} options={brandOptions} />
+      <FilterSelect value={priceBand} onChange={v => startTransition(() => setPriceBand(v))} options={PRICE_FILTERS} />
+      <FilterSelect value={sortBy} onChange={v => startTransition(() => setSortBy(v))} options={SORT_OPTIONS} />
       {activeFilters.length > 0 && (
-        <button onClick={clearAll} className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground">
-          Clear all filters
+        <button onClick={clearAll} className="h-10 rounded-full px-4 font-sans text-[14px] font-medium text-[#737373] hover:text-black transition-colors self-start lg:self-auto">
+          Clear all
         </button>
       )}
     </div>
   );
 
   return (
-    <main className="min-h-screen bg-background px-4 py-12 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-[1600px]">
+    <main className="min-h-screen bg-white px-4 py-20 md:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1200px]">
         {/* Page header */}
-        <div className="mb-10 border-b border-border pb-8">
-          <span className="mb-2 block font-mono text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
-            QuickStore Curated
-          </span>
-          <div className="flex items-end justify-between gap-4">
-            <h1 className="font-display text-4xl italic tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-              The Catalogue
+        <div className="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div>
+            <h1 className="font-display text-[36px] font-medium text-black">
+              Shop
             </h1>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => startTransition(() => refetch())}
-                className="hidden items-center gap-1.5 border border-border px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:border-foreground hover:text-foreground sm:flex"
-              >
-                <RefreshCw className="h-3 w-3" /> Sync
-              </button>
-              <button
-                onClick={() => setSidebarOpen(o => !o)}
-                className="flex items-center gap-1.5 border border-border px-3 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-foreground lg:hidden"
-              >
-                <SlidersHorizontal className="h-3 w-3" /> Filters
-              </button>
-            </div>
+            <p className="mt-2 font-sans text-[16px] text-[#737373]">
+              {filteredProducts.length} {filteredProducts.length === 1 ? 'item' : 'items'} found
+            </p>
           </div>
-          <p className="mt-3 font-mono text-xs text-muted-foreground">
-            {filteredProducts.length} {filteredProducts.length === 1 ? 'item' : 'items'} found
-          </p>
+          
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setSidebarOpen(o => !o)}
+              className="flex h-10 items-center gap-2 rounded-full border border-[#d4d4d4] bg-white px-4 font-sans text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa] lg:hidden"
+            >
+              <SlidersHorizontal className="h-4 w-4" /> Filters
+            </button>
+            <button
+              onClick={() => startTransition(() => refetch())}
+              className="flex h-10 items-center gap-2 rounded-full border border-[#d4d4d4] bg-white px-4 font-sans text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa]"
+              title="Sync products"
+            >
+              <RefreshCw className="h-4 w-4" /> Sync
+            </button>
+          </div>
+        </div>
+
+        {/* Horizontal Filters Bar (Desktop) */}
+        <div className="hidden lg:block sticky top-14 z-30 mb-8 border-b border-[#e5e5e5] bg-white py-4">
+          {Filters}
         </div>
 
         {/* Active filter chips */}
         {activeFilters.length > 0 && (
-          <div className="mb-6 flex flex-wrap gap-2">
+          <div className="mb-8 flex flex-wrap gap-2">
             {activeFilters.map(f => (
               <button
                 key={f.label}
                 onClick={f.clear}
-                className="flex items-center gap-1.5 border border-border px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-foreground transition-colors hover:border-foreground"
+                className="flex h-7 items-center gap-1.5 rounded-full bg-[#fafafa] px-3 font-sans text-[12px] text-black transition-colors hover:bg-[#e5e5e5]"
               >
-                {f.label} <X className="h-2.5 w-2.5" />
+                {f.label} <X className="h-3 w-3" />
               </button>
             ))}
           </div>
@@ -286,87 +291,79 @@ export default function ShopPage() {
         {/* Mobile sidebar overlay */}
         {sidebarOpen && (
           <div className="fixed inset-0 z-50 lg:hidden">
-            <div className="absolute inset-0 bg-foreground/40" onClick={() => setSidebarOpen(false)} />
-            <div className="absolute left-0 top-0 h-full w-72 overflow-y-auto border-r border-border bg-background p-6">
-              <div className="mb-6 flex items-center justify-between">
-                <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-foreground">Filters</span>
-                <button onClick={() => setSidebarOpen(false)}><X className="h-4 w-4" /></button>
+            <div className="absolute inset-0 bg-black/40" onClick={() => setSidebarOpen(false)} />
+            <div className="absolute left-0 top-0 h-full w-80 overflow-y-auto bg-white p-6 shadow-xl">
+              <div className="mb-6 flex items-center justify-between border-b border-[#e5e5e5] pb-4">
+                <span className="font-sans text-[16px] font-medium text-black">Filters</span>
+                <button onClick={() => setSidebarOpen(false)} className="rounded-full p-2 hover:bg-[#fafafa]">
+                  <X className="h-5 w-5 text-black" />
+                </button>
               </div>
               {Filters}
             </div>
           </div>
         )}
 
-        <div className="grid gap-10 lg:grid-cols-[240px_minmax(0,1fr)]">
-          {/* Desktop sidebar */}
-          <aside className="hidden h-fit lg:sticky lg:top-24 lg:block">
-            <div className="border-b border-border pb-4 mb-5">
-              <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-foreground">Filters</span>
+        {/* Grid (No sidebar) */}
+        <div>
+          {isError && (
+            <div className="mb-8 rounded-[12px] border border-[#e5e5e5] p-6 text-center">
+              <p className="font-sans text-[16px] text-[#737373]">Failed to load catalogue.</p>
+              <button onClick={() => refetch()} className="mt-4 rounded-full border border-[#d4d4d4] bg-white px-5 py-2 font-sans text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa]">
+                Try again
+              </button>
             </div>
-            {Filters}
-          </aside>
+          )}
 
-          {/* Grid */}
-          <div>
-            {isError && (
-              <div className="mb-8 border border-border p-6">
-                <p className="text-sm text-foreground">Failed to load catalogue.</p>
-                <button onClick={() => refetch()} className="mt-2 font-mono text-[11px] uppercase tracking-[0.15em] text-foreground underline underline-offset-4">
-                  Try again
-                </button>
-              </div>
-            )}
-
-            {loading && products.length > 0 && (
-              <div className="mb-6 flex items-center gap-2 border border-border px-4 py-3">
-                <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-border border-t-foreground" />
-                <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Refreshing…</p>
-              </div>
-            )}
-
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-3">
-              {visibleProducts.map(product => <ProductCard key={product.id} product={product} />)}
+          {loading && products.length > 0 && (
+            <div className="mb-6 flex items-center gap-2 rounded-full border border-[#e5e5e5] bg-[#fafafa] px-4 py-2 w-fit">
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-[#d4d4d4] border-t-black" />
+              <p className="font-sans text-[14px] text-[#737373]">Refreshing…</p>
             </div>
+          )}
 
-            {!loading && visibleProducts.length === 0 && (
-              <div className="flex flex-col items-center justify-center gap-4 border border-border py-20 text-center">
-                <PackageSearch className="h-8 w-8 text-muted-foreground" />
-                <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">No matches found</p>
-                <button onClick={clearAll} className="font-mono text-[11px] uppercase tracking-[0.15em] text-foreground underline underline-offset-4">
-                  Reset filters
-                </button>
-              </div>
-            )}
-
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="mt-10 flex items-center justify-center gap-1">
-                <button
-                  onClick={() => setPage(p => Math.max(1, p - 1))}
-                  disabled={page === 1}
-                  className="border border-border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-foreground transition-colors hover:border-foreground disabled:opacity-30"
-                >
-                  Prev
-                </button>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(n => (
-                  <button
-                    key={n}
-                    onClick={() => setPage(n)}
-                    className={`border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.15em] transition-colors ${n === page ? 'border-foreground bg-foreground text-background' : 'border-border text-foreground hover:border-foreground'}`}
-                  >
-                    {n}
-                  </button>
-                ))}
-                <button
-                  onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-                  disabled={page === totalPages}
-                  className="border border-border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.15em] text-foreground transition-colors hover:border-foreground disabled:opacity-30"
-                >
-                  Next
-                </button>
-              </div>
-            )}
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+            {visibleProducts.map(product => <ProductCard key={product.id} product={product} />)}
           </div>
+
+          {!loading && visibleProducts.length === 0 && (
+            <div className="flex flex-col items-center justify-center gap-4 rounded-[12px] border border-[#e5e5e5] py-20 text-center bg-[#fafafa]">
+              <PackageSearch className="h-10 w-10 text-[#a3a3a3]" />
+              <p className="font-sans text-[16px] text-[#737373]">No matches found.</p>
+              <button onClick={clearAll} className="mt-2 rounded-full bg-black px-5 py-2 font-sans text-[14px] font-medium text-white transition-colors hover:bg-[#090909]">
+                Reset filters
+              </button>
+            </div>
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-12 flex items-center justify-center gap-2">
+              <button
+                onClick={() => handlePageChange(Math.max(1, page - 1))}
+                disabled={page === 1}
+                className="flex h-9 items-center justify-center rounded-full border border-[#d4d4d4] bg-white px-4 font-sans text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa] disabled:opacity-30 disabled:hover:bg-white"
+              >
+                Prev
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(n => (
+                <button
+                  key={n}
+                  onClick={() => handlePageChange(n)}
+                  className={`flex h-9 w-9 items-center justify-center rounded-full font-sans text-[14px] font-medium transition-colors ${n === page ? 'bg-black text-white' : 'border border-[#d4d4d4] bg-white text-black hover:bg-[#fafafa]'}`}
+                >
+                  {n}
+                </button>
+              ))}
+              <button
+                onClick={() => handlePageChange(Math.min(totalPages, page + 1))}
+                disabled={page === totalPages}
+                className="flex h-9 items-center justify-center rounded-full border border-[#d4d4d4] bg-white px-4 font-sans text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa] disabled:opacity-30 disabled:hover:bg-white"
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </main>

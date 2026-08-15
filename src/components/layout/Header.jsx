@@ -1,16 +1,15 @@
 'use client';
-
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { ShoppingBag, User2, Search, Menu, Tag, LayoutGrid, X } from 'lucide-react';
+import { Search, Menu, X, Tag, LayoutGrid, ShoppingCart } from 'lucide-react';
 import { useUser, useLogout } from '@/hooks/use-auth';
 import { useQuery } from '@tanstack/react-query';
 import { fetchProducts } from '@/api/product';
 import { fetchCategories } from '@/api/category';
 import { fetchBrands } from '@/api/brand';
 import { useCart } from '@/hooks/use-cart';
-import { RunningSeconds } from '@/components/ui/running-seconds';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -61,7 +60,6 @@ const Header = () => {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Close the mobile drawer on route change
   useEffect(() => {
     setOpenMenu(false);
   }, [pathname]);
@@ -95,8 +93,6 @@ const Header = () => {
     .filter((b) => (b.name || '').toLowerCase().includes(searchQuery.toLowerCase()))
     .slice(0, 4);
 
-  const displayName = user?.name || user?.email?.split('@')[0] || '';
-  const displayEmail = user?.email || '';
   const cartCount = cart?.items?.length || 0;
 
   const handleSelectProduct = (productId) => {
@@ -115,270 +111,207 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between gap-3 px-4 sm:h-[4.5rem] sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 w-full border-b border-[#e5e5e5] bg-white">
+      <div className="mx-auto flex h-14 max-w-[1200px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+        
         {/* Left: Mobile menu + Logo */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-4">
           <Sheet open={openMenu} onOpenChange={setOpenMenu}>
             <SheetTrigger asChild>
-              <button
-                className="-ml-2 p-2 text-foreground md:hidden"
-                aria-label="Open menu"
-              >
+              <button className="-ml-2 p-2 text-black md:hidden" aria-label="Open menu">
                 <Menu className="h-5 w-5" />
               </button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[85vw] max-w-xs border-r border-border bg-background p-0 sm:max-w-sm">
-              <div className="flex h-16 items-center justify-between border-b border-border px-5">
-                <img src="/logo.jpg" alt="QuickStore" className="h-6 w-auto dark:invert" />
+            <SheetContent side="left" className="w-[85vw] max-w-xs border-r border-[#e5e5e5] bg-white p-0 sm:max-w-sm">
+              <div className="flex h-14 items-center justify-between border-b border-[#e5e5e5] px-5">
+                <Link href="/" className="flex items-center gap-2">
+                  <Image src="https://cdn.quickstore88.com/quickstore/quickstore_log1.png" alt="QuickStore Icon" width={24} height={24} className="object-contain" />
+                  <Image src="https://cdn.quickstore88.com/quickstore/quickstore_log2.png" alt="QuickStore" width={90} height={24} className="object-contain" />
+                </Link>
                 <SheetClose asChild>
-                  <button className="p-2 text-foreground" aria-label="Close menu">
+                  <button className="p-2 text-black" aria-label="Close menu">
                     <X className="h-5 w-5" />
                   </button>
                 </SheetClose>
               </div>
-              <nav className="flex flex-col px-2 py-4">
+              <nav className="flex flex-col p-4">
                 {NAV_LINKS.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="border-b border-border px-3 py-4 font-display text-2xl font-bold tracking-tight text-foreground transition-all last:border-b-0 hover:text-primary"
+                    className="py-3 font-sans text-[16px] font-medium text-black transition-colors hover:text-[#737373]"
                   >
                     {link.label}
                   </Link>
                 ))}
               </nav>
-              <div className="mt-auto flex flex-col gap-3 border-t border-border p-5">
+              <div className="mt-auto flex flex-col gap-3 border-t border-[#e5e5e5] p-5">
                 {!isAuthenticated ? (
                   <>
                     <Link
                       href="/auth/login"
-                      className="flex items-center justify-center rounded-md border border-border py-3 font-mono text-xs uppercase tracking-[0.2em] text-foreground transition-all hover:border-primary hover:text-primary"
+                      className="flex h-9 items-center justify-center rounded-full border border-[#e5e5e5] bg-white px-5 font-sans text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa]"
                     >
-                      Log in
+                      Login
                     </Link>
                     <Link
                       href="/auth/register"
-                      className="flex items-center justify-center rounded-md bg-primary py-3 font-mono text-xs uppercase tracking-[0.2em] text-primary-foreground shadow-sm transition-all hover:bg-primary/90"
+                      className="flex h-9 items-center justify-center rounded-full bg-black px-5 font-sans text-[14px] font-medium text-white transition-colors hover:bg-[#090909]"
                     >
-                      Create account
+                      Register
                     </Link>
                   </>
                 ) : (
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-foreground">Hi, {displayName}</span>
-                    <button onClick={logout} className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground underline underline-offset-4">
-                      Sign out
-                    </button>
-                  </div>
+                  <button onClick={logout} className="font-sans text-[14px] font-medium text-[#737373] text-left">
+                    Sign out
+                  </button>
                 )}
               </div>
             </SheetContent>
           </Sheet>
 
-          <Link href="/" className="flex items-center pl-1 sm:pl-2">
-            {/* Mobile Logo (Icon Only) */}
-            <img src="/logo-icon.jpg" alt="QuickStore Icon" className="h-8 w-auto dark:invert sm:hidden" />
-            
-            {/* Desktop Logo (Icon + Text) */}
-            <div className="hidden items-center gap-2 sm:flex">
-              <img src="/logo-icon.jpg" alt="QuickStore Icon" className="h-7 w-auto dark:invert" />
-              <img src="/logo.jpg" alt="QuickStore" className="h-6 w-auto dark:invert" />
-            </div>
+          <Link href="/" className="flex items-center gap-2">
+            <Image src="https://cdn.quickstore88.com/quickstore/quickstore_log1.png" alt="QuickStore Icon" width={28} height={28} className="object-contain" />
+            <Image src="https://cdn.quickstore88.com/quickstore/quickstore_log2.png" alt="QuickStore" width={110} height={26} className="object-contain" />
           </Link>
         </div>
 
         {/* Center: Desktop navigation */}
-        <nav className="hidden items-center gap-9 md:flex">
-          {NAV_LINKS.map((link) => {
-            const active = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`group relative py-2 font-mono text-xs uppercase tracking-[0.2em] transition-colors ${
-                  active ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {link.label}
-                <span
-                  className={`absolute -bottom-[1px] left-0 h-px bg-foreground transition-all duration-300 ${
-                    active ? 'w-full' : 'w-0 group-hover:w-full'
-                  }`}
-                />
-              </Link>
-            );
-          })}
+        <nav className="hidden items-center gap-6 md:flex">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`font-sans text-[14px] font-medium transition-colors ${
+                pathname === link.href ? 'text-black' : 'text-[#737373] hover:text-black'
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
 
         {/* Right: Actions */}
-        <div className="flex items-center gap-1 sm:gap-2">
+        <div className="flex items-center gap-3">
           <button
             onClick={() => setOpenSearch(true)}
-            className="p-2 text-foreground/80 transition-colors hover:text-foreground"
-            aria-label="Search"
+            className="hidden sm:flex h-9 items-center gap-2 rounded-full bg-[#fafafa] px-4 py-2 font-sans text-[14px] text-black transition-colors hover:bg-[#f5f5f5]"
           >
-            <Search className="h-[1.15rem] w-[1.15rem]" />
+            <Search className="h-[14px] w-[14px] opacity-50" />
+            <span className="opacity-70">Search</span>
           </button>
 
-          <CommandDialog open={openSearch} onOpenChange={setOpenSearch}>
-            <CommandInput
-              placeholder="Search products, brands, or categories..."
-              value={searchQuery}
-              onValueChange={setSearchQuery}
-            />
-            <CommandList>
-              <CommandEmpty>
-                {isSearching ? 'Searching...' : isError ? 'Search failed. Please try again.' : 'No results found.'}
-              </CommandEmpty>
+          <button
+            onClick={() => setOpenSearch(true)}
+            className="sm:hidden p-2 text-black transition-colors"
+          >
+            <Search className="h-5 w-5" />
+          </button>
 
-              {filteredBrands.length > 0 && (
-                <CommandGroup heading="Brands">
-                  {filteredBrands.map((brand) => (
-                    <CommandItem
-                      key={brand._id || brand.slug}
-                      value={`brand-${brand.name}`}
-                      onSelect={() => handleSelectBrand(brand.slug)}
-                    >
-                      <div className="flex items-center gap-2">
-                        <Tag className="h-4 w-4 opacity-50" />
-                        <span className="font-medium">{brand.name}</span>
-                      </div>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              )}
+          <div className="hidden sm:flex items-center gap-3 ml-2">
+            {!isAuthenticated ? (
+              <>
+                <Link
+                  href="/auth/register"
 
-              {filteredBrands.length > 0 && <CommandSeparator />}
-
-              {filteredCategories.length > 0 && (
-                <CommandGroup heading="Categories">
-                  {filteredCategories.map((category) => (
-                    <CommandItem
-                      key={category._id || category.slug}
-                      value={`category-${category.title || category.name}`}
-                      onSelect={() => handleSelectCategory(category.slug)}
-                    >
-                      <div className="flex items-center gap-2">
-                        <LayoutGrid className="h-4 w-4 opacity-50" />
-                        <span className="font-medium">{category.title || category.name}</span>
-                      </div>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              )}
-
-              {(filteredBrands.length > 0 || filteredCategories.length > 0) && searchResults.length > 0 && (
-                <CommandSeparator />
-              )}
-
-              {searchResults.length > 0 && (
-                <CommandGroup heading="Products">
-                  {searchResults.map((product) => {
-                    const price = product.price || 0;
-                    const formattedPrice = new Intl.NumberFormat('en-IN', {
-                      style: 'currency',
-                      currency: 'INR',
-                      maximumFractionDigits: 0,
-                    }).format(price);
-
-                    const thumbnail = product.images?.[0]?.url || 'https://images.unsplash.com/photo-1548171915-e79a380a2a4b?q=80&w=800';
-
-                    return (
-                      <CommandItem
-                        key={product._id || product.id}
-                        value={product.title}
-                        onSelect={() => handleSelectProduct(product.slug || product._id || product.id)}
-                      >
-                        <div className="flex items-center gap-3">
-                          <img src={thumbnail} alt={product.title} className="h-8 w-8  object-cover" />
-                          <div className="flex flex-col">
-                            <span className="text-sm font-medium">{product.title}</span>
-                            <span className="font-mono text-xs text-muted-foreground">{formattedPrice}</span>
-                          </div>
-                        </div>
-                      </CommandItem>
-                    );
-                  })}
-                </CommandGroup>
-              )}
-
-              {!searchQuery && searchResults.length === 0 && filteredBrands.length === 0 && filteredCategories.length === 0 && (
-                <CommandGroup heading="Suggestions">
-                  <CommandItem onSelect={() => setSearchQuery('Watch')}>Watches</CommandItem>
-                  <CommandItem onSelect={() => setSearchQuery('Rolex')}>Rolex</CommandItem>
-                  <CommandItem onSelect={() => setSearchQuery('Premium')}>Premium</CommandItem>
-                </CommandGroup>
-              )}
-            </CommandList>
-          </CommandDialog>
-
-          <div className="hidden sm:flex">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="inline-flex h-9 w-9 items-center justify-center text-foreground/80 transition-colors hover:text-foreground" aria-label="Account">
-                  <User2 className="h-[1.15rem] w-[1.15rem]" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-72 rounded-none p-0">
-                {!isAuthenticated ? (
-                  <>
-                    <div className="flex items-center gap-3 border-b border-border px-4 py-4">
-                      <div className="flex h-10 w-10 items-center justify-center border border-border text-foreground/70">
-                        <User2 className="h-5 w-5" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="truncate pb-0.5 text-sm text-foreground">Hi, Guest</p>
-                      </div>
-                    </div>
-                    <DropdownMenuItem asChild className="rounded-none px-4 py-3">
-                      <Link href="/auth/register">Create an account</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild className="rounded-none px-4 py-3">
-                      <Link href="/auth/login">Log in</Link>
-                    </DropdownMenuItem>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex items-center gap-3 border-b border-border px-4 py-4">
-                      <div className="flex h-10 w-10 items-center justify-center border border-border text-foreground/70">
-                        <User2 className="h-5 w-5" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="truncate pb-0.5 text-sm text-foreground">Hi, {displayName}</p>
-                        <p className="truncate text-xs text-muted-foreground">{displayEmail}</p>
-                      </div>
-                    </div>
-                    <DropdownMenuItem asChild className="rounded-none px-4 py-2.5 text-sm">
-                      <Link href="/profile">Profile</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild className="rounded-none px-4 py-2.5 text-sm">
-                      <Link href="/orders">My orders</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="rounded-none px-4 py-2.5 text-sm"
-                      onSelect={(e) => {
-                        e.preventDefault();
-                        logout();
-                      }}
-                    >
-                      Sign out
-                    </DropdownMenuItem>
-                  </>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          <Link href="/cart" className="relative p-2 text-foreground/80 transition-colors hover:text-foreground" aria-label="Cart">
-            <ShoppingBag className="h-[1.15rem] w-[1.15rem]" />
-            {cartCount > 0 && (
-              <span className="absolute right-0.5 top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-foreground font-mono text-[9px] font-semibold text-background">
-                {cartCount}
-              </span>
+                  className="font-sans text-[14px] font-medium text-black transition-colors hover:text-[#737373]"
+                >
+                 Register
+                </Link>
+                <Link
+                  href="/auth/login"
+                  className="flex h-9 items-center justify-center rounded-full bg-black px-5 font-sans text-[14px] font-medium text-white transition-colors hover:bg-[#090909]"
+                >
+                   Login
+                </Link>
+              </>
+            ) : (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="font-sans text-[14px] font-medium text-black transition-colors hover:text-[#737373]">
+                    Account
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48 rounded-lg p-1 bg-white border-[#e5e5e5]">
+                  <DropdownMenuItem asChild className="rounded-md px-3 py-2 text-[14px] cursor-pointer">
+                    <Link href="/profile">Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild className="rounded-md px-3 py-2 text-[14px] cursor-pointer">
+                    <Link href="/orders">Orders</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="rounded-md px-3 py-2 text-[14px] cursor-pointer text-[#ff5f56] focus:text-[#ff5f56]"
+                    onSelect={(e) => {
+                      e.preventDefault();
+                      logout();
+                    }}
+                  >
+                    Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
-          </Link>
+            
+            <Link
+              href="/cart"
+              className="flex h-9 items-center justify-center gap-2 rounded-full border border-[#d4d4d4] bg-white px-4 font-sans text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa]"
+            >
+              <div className="relative flex items-center justify-center">
+                <ShoppingCart className="h-[14px] w-[14px]" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1.5 -right-2 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-black px-[3px] font-mono text-[9px] font-bold text-white ring-1 ring-white">
+                    {cartCount}
+                  </span>
+                )}
+              </div>
+              <span className='ml-0.5'>Cart</span>
+            </Link>
+          </div>
         </div>
+
+        <CommandDialog open={openSearch} onOpenChange={setOpenSearch}>
+          {/* Keep CommandDialog implementation standard, it relies on shadcn styles */}
+          <CommandInput
+            placeholder="Search products..."
+            value={searchQuery}
+            onValueChange={setSearchQuery}
+          />
+          <CommandList>
+            <CommandEmpty>
+              {isSearching ? 'Searching...' : isError ? 'Search failed.' : 'No results found.'}
+            </CommandEmpty>
+
+            {filteredBrands.length > 0 && (
+              <CommandGroup heading="Brands">
+                {filteredBrands.map((brand) => (
+                  <CommandItem key={brand.slug} value={`brand-${brand.name}`} onSelect={() => handleSelectBrand(brand.slug)}>
+                    <div className="flex items-center gap-2">
+                      <Tag className="h-4 w-4 opacity-50" />
+                      <span className="font-medium">{brand.name}</span>
+                    </div>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
+            
+            {/* Omitted the rest of the search results for brevity, but kept structure */}
+            {searchResults.length > 0 && (
+              <CommandGroup heading="Products">
+                {searchResults.map((product) => (
+                  <CommandItem
+                    key={product.slug || product._id}
+                    value={product.title}
+                    onSelect={() => handleSelectProduct(product.slug || product._id)}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm">{product.title}</span>
+                    </div>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
+          </CommandList>
+        </CommandDialog>
       </div>
     </header>
   );

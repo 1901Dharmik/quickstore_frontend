@@ -20,18 +20,18 @@ function formatCurrency(value) {
 
 function ProductPageSkeleton() {
   return (
-    <main className="min-h-screen bg-background px-4 py-12 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-[1600px]">
+    <main className="min-h-screen bg-white px-4 py-12 md:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1200px]">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
-          <Skeleton className="aspect-square w-full" />
+          <Skeleton className="aspect-square w-full rounded-[12px]" />
           <div className="space-y-5">
-            <Skeleton className="h-10 w-3/4" />
-            <Skeleton className="h-7 w-1/4" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-5/6" />
+            <Skeleton className="h-10 w-3/4 rounded-full" />
+            <Skeleton className="h-7 w-1/4 rounded-full" />
+            <Skeleton className="h-4 w-full rounded-full" />
+            <Skeleton className="h-4 w-5/6 rounded-full" />
             <div className="flex gap-4 pt-4">
-              <Skeleton className="h-12 flex-1" />
-              <Skeleton className="h-12 flex-1" />
+              <Skeleton className="h-12 flex-1 rounded-full" />
+              <Skeleton className="h-12 flex-1 rounded-full" />
             </div>
           </div>
         </div>
@@ -106,11 +106,11 @@ export default function ProductPage({ productId, initialData }) {
 
   if (isError || !productData) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-background px-4">
-        <div className="flex max-w-sm flex-col items-center gap-4 border border-border p-10 text-center">
-          <AlertCircle className="h-10 w-10 text-muted-foreground" />
-          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Product not found</p>
-          <Link href="/shop" className="font-mono text-[11px] uppercase tracking-[0.15em] text-foreground underline underline-offset-4">
+      <main className="flex min-h-screen items-center justify-center bg-white px-4">
+        <div className="flex max-w-sm flex-col items-center gap-4 rounded-[12px] border border-[#e5e5e5] p-10 text-center">
+          <AlertCircle className="h-10 w-10 text-[#a3a3a3]" />
+          <p className="font-sans text-[14px] font-medium text-[#737373]">Product not found</p>
+          <Link href="/shop" className="font-sans text-[14px] font-medium text-black underline underline-offset-4 transition-opacity hover:opacity-70">
             Back to Shop
           </Link>
         </div>
@@ -132,8 +132,8 @@ export default function ProductPage({ productId, initialData }) {
   const handleBuyNow = () => addToCartMutation.mutate({ product_id: attrs._id || attrs.id, variant_id: activeVariant?.id || null, quantity: 1 }, { onSuccess: () => router.push('/checkout') });
 
   return (
-    <main className="min-h-screen bg-background px-4 py-12 md:px-6 lg:px-8">
-      <div className="mx-auto max-w-[1600px] space-y-16">
+    <main className="min-h-screen bg-white px-4 py-12 md:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1200px] space-y-16">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
           {/* Gallery */}
           <div className="space-y-3">
@@ -141,14 +141,14 @@ export default function ProductPage({ productId, initialData }) {
               <CarouselContent>
                 {currentImages.map((img, idx) => (
                   <CarouselItem key={`${img}-${idx}`}>
-                    <div className="relative aspect-square overflow-hidden border border-border bg-secondary">
+                    <div className="relative aspect-square overflow-hidden rounded-[12px] border border-[#e5e5e5] bg-[#fafafa]">
                       <Image
                         src={img}
                         alt={`${attrs.title || 'Product'} — image ${idx + 1}`}
                         fill
                         priority={idx === 0}
                         sizes="(min-width: 1024px) 50vw, 100vw"
-                        className="object-contain p-8 "
+                        className="object-contain p-8"
                       />
                     </div>
                   </CarouselItem>
@@ -168,12 +168,12 @@ export default function ProductPage({ productId, initialData }) {
                     key={`${img}-thumb-${idx}`}
                     onClick={() => api?.scrollTo(idx)}
                     className={cn(
-                      'relative aspect-square overflow-hidden border bg-secondary transition-all',
-                      current === idx ? 'border-foreground' : 'border-border opacity-50 hover:opacity-100'
+                      'relative aspect-square overflow-hidden rounded-[8px] border bg-[#fafafa] transition-all',
+                      current === idx ? 'border-black' : 'border-[#e5e5e5] opacity-50 hover:opacity-100'
                     )}
                     aria-label={`Go to image ${idx + 1}`}
                   >
-                    <Image src={img} alt="" fill sizes="10vw" className="object-contain p-1 " />
+                    <Image src={img} alt="" fill sizes="10vw" className="object-contain p-2" />
                   </button>
                 ))}
               </div>
@@ -185,42 +185,42 @@ export default function ProductPage({ productId, initialData }) {
             {/* Badges */}
             <div className="flex flex-wrap gap-2">
               {attrs.is_bestseller && (
-                <span className="bg-foreground px-2.5 py-1 font-mono text-[9px] uppercase tracking-wider text-background">Bestseller</span>
+                <span className="rounded-full bg-black px-3 py-1 font-sans text-[12px] font-medium text-white shadow-sm">Bestseller</span>
               )}
               {attrs.is_new_arrival && (
-                <span className="border border-foreground px-2.5 py-1 font-mono text-[9px] uppercase tracking-wider text-foreground">New Arrival</span>
+                <span className="rounded-full border border-[#e5e5e5] bg-white px-3 py-1 font-sans text-[12px] font-medium text-black shadow-sm">New Arrival</span>
               )}
               {attrs.is_featured && (
-                <span className="border border-border px-2.5 py-1 font-mono text-[9px] uppercase tracking-wider text-muted-foreground">Featured</span>
+                <span className="rounded-full border border-[#e5e5e5] bg-[#fafafa] px-3 py-1 font-sans text-[12px] font-medium text-[#737373] shadow-sm">Featured</span>
               )}
             </div>
 
             <div>
-              <h1 className="font-display text-3xl italic tracking-tight text-foreground md:text-4xl lg:text-5xl">
+              <h1 className="font-display text-[32px] font-medium leading-tight text-black md:text-[40px] lg:text-[48px]">
                 {attrs.title}
               </h1>
               {attrs.shortDescription && (
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{attrs.shortDescription}</p>
+                <p className="mt-3 font-sans text-[16px] leading-relaxed text-[#737373]">{attrs.shortDescription}</p>
               )}
             </div>
 
             <div className="flex items-baseline gap-3">
-              <span className="font-mono text-2xl font-medium text-foreground">{formatCurrency(price)}</span>
+              <span className="font-sans text-[24px] font-medium text-black">{formatCurrency(price)}</span>
               {hasDiscount && (
                 <>
-                  <span className="font-mono text-sm text-muted-foreground line-through">{formatCurrency(originalPrice)}</span>
-                  <span className="font-mono text-sm text-foreground">−{discountPct}%</span>
+                  <span className="font-sans text-[16px] text-[#a3a3a3] line-through">{formatCurrency(originalPrice)}</span>
+                  <span className="font-sans text-[14px] font-medium text-red-600">−{discountPct}%</span>
                 </>
               )}
             </div>
 
             {/* Variant selectors */}
             {Object.keys(optionGroups).length > 0 && (
-              <div className="space-y-5 border-t border-border pt-5">
+              <div className="space-y-5 border-t border-[#e5e5e5] pt-5">
                 {Object.entries(optionGroups).map(([name, values]) => (
                   <div key={name}>
-                    <label className="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                      {name}: <span className="text-foreground">{selectedOptions[name]}</span>
+                    <label className="mb-2 block font-sans text-[14px] text-black">
+                      {name}: <span className="font-medium text-[#737373]">{selectedOptions[name]}</span>
                     </label>
                     <div className="flex flex-wrap gap-2">
                       {values.map(({ value }) => (
@@ -228,10 +228,10 @@ export default function ProductPage({ productId, initialData }) {
                           key={value}
                           onClick={() => setSelectedOptions(prev => ({ ...prev, [name]: value }))}
                           className={cn(
-                            'border px-4 py-2 font-mono text-xs transition-colors',
+                            'rounded-full border px-4 py-2 font-sans text-[14px] font-medium transition-colors',
                             selectedOptions[name] === value
-                              ? 'border-foreground bg-foreground text-background'
-                              : 'border-border text-foreground hover:border-foreground'
+                              ? 'border-black bg-black text-white'
+                              : 'border-[#d4d4d4] text-black hover:border-black'
                           )}
                         >
                           {value}
@@ -244,24 +244,24 @@ export default function ProductPage({ productId, initialData }) {
             )}
 
             {/* Meta */}
-            <div className="space-y-2 border-t border-border pt-5 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2"><Tag className="h-3.5 w-3.5" /> Brand: <span className="text-foreground">{brandName}</span></div>
-              <div className="flex items-center gap-2"><Boxes className="h-3.5 w-3.5" /> Category: <span className="text-foreground">{categoryName}</span></div>
+            <div className="space-y-3 border-t border-[#e5e5e5] pt-6 font-sans text-[14px] text-[#737373]">
+              <div className="flex items-center gap-2"><Tag className="h-4 w-4" /> Brand: <span className="text-black">{brandName}</span></div>
+              <div className="flex items-center gap-2"><Boxes className="h-4 w-4" /> Category: <span className="text-black">{categoryName}</span></div>
               <div className="flex items-center gap-2">
-                <PackageSearch className="h-3.5 w-3.5" />
-                <span className={stock === 0 ? 'text-muted-foreground' : stock <= 10 ? 'text-foreground' : 'text-foreground'}>
+                <PackageSearch className="h-4 w-4" />
+                <span className={stock === 0 ? 'text-[#a3a3a3]' : stock <= 10 ? 'text-black' : 'text-black'}>
                   {stock > 0 ? `${stock} in stock` : 'Out of stock'}
                 </span>
               </div>
-              {sku && <p className="font-mono text-[10px] uppercase tracking-widest">SKU: {sku}</p>}
+              {sku && <p className="font-sans text-[14px]">SKU: <span className="text-black">{sku}</span></p>}
             </div>
 
             {/* CTAs */}
-            <div className="flex flex-col gap-3 pt-2 sm:flex-row">
+            <div className="flex flex-col gap-3 pt-4 sm:flex-row">
               <button
                 onClick={handleAddToCart}
                 disabled={stock === 0 || addToCartMutation.isPending}
-                className="flex flex-1 items-center justify-center gap-2 bg-foreground px-6 py-4 font-mono text-xs uppercase tracking-[0.2em] text-background transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40"
+                className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-black px-6 font-sans text-[14px] font-medium text-white transition-opacity hover:bg-[#090909] disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <ShoppingCart className="h-4 w-4" />
                 {addToCartMutation.isPending ? 'Adding…' : 'Add to Cart'}
@@ -269,7 +269,7 @@ export default function ProductPage({ productId, initialData }) {
               <button
                 onClick={handleBuyNow}
                 disabled={stock === 0 || addToCartMutation.isPending}
-                className="flex flex-1 items-center justify-center gap-2 border border-foreground px-6 py-4 font-mono text-xs uppercase tracking-[0.2em] text-foreground transition-colors hover:bg-foreground hover:text-background disabled:cursor-not-allowed disabled:opacity-40"
+                className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full border border-[#d4d4d4] bg-white px-6 font-sans text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa] disabled:cursor-not-allowed disabled:opacity-40"
               >
                 <CreditCard className="h-4 w-4" />
                 Buy Now
@@ -280,21 +280,21 @@ export default function ProductPage({ productId, initialData }) {
 
         {/* Description & Specs */}
         {(attrs.description || attrs.specifications?.length > 0) && (
-          <div className="tick-track space-y-10 pt-10">
+          <div className="space-y-10 pt-10">
             {attrs.description && (
               <div>
-                <span className="mb-3 block font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">Product Details</span>
-                <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">{attrs.description}</p>
+                <span className="mb-3 block font-sans text-[18px] font-medium text-black">Product Details</span>
+                <p className="max-w-2xl font-sans text-[16px] leading-relaxed text-[#737373]">{attrs.description}</p>
               </div>
             )}
             {attrs.specifications?.length > 0 && (
               <div>
-                <span className="mb-4 block font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">Specifications</span>
+                <span className="mb-4 block font-sans text-[18px] font-medium text-black">Specifications</span>
                 <div className="grid grid-cols-1 gap-x-12 gap-y-3 sm:grid-cols-2">
                   {attrs.specifications.map((spec, i) => (
-                    <div key={i} className="flex justify-between border-b border-border pb-2 text-sm">
-                      <span className="text-muted-foreground">{spec.key}</span>
-                      <span className="font-medium text-foreground">{spec.value}</span>
+                    <div key={i} className="flex justify-between border-b border-[#e5e5e5] pb-2 font-sans text-[14px]">
+                      <span className="text-[#737373]">{spec.key}</span>
+                      <span className="font-medium text-black">{spec.value}</span>
                     </div>
                   ))}
                 </div>
@@ -305,24 +305,25 @@ export default function ProductPage({ productId, initialData }) {
 
         {/* Related */}
         {relatedRes?.data?.length > 0 && (
-          <div className="tick-track pt-10">
-            <span className="mb-2 block font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">Discover More</span>
-            <h3 className="mb-8 font-display text-2xl italic tracking-tight text-foreground">Related Masterpieces</h3>
+          <div className="pt-10">
+            <h3 className="mb-8 font-display text-[24px] font-medium tracking-tight text-black">Related Masterpieces</h3>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {relatedRes.data.map(item => {
                 const rImg = item.images?.[0]?.url || 'https://images.unsplash.com/photo-1548171915-e79a380a2a4b?q=80&w=800';
                 return (
-                  <article key={item._id} className="group border border-border bg-background transition-colors hover:border-foreground">
-                    <Link href={`/product/${item.slug || item._id}`} className="relative block overflow-hidden border-b border-border bg-secondary">
-                      <div className="relative aspect-square overflow-hidden">
-                        <Image src={rImg} alt={item.title} fill sizes="25vw" className="object-contain p-5  transition-transform duration-700 group-hover:scale-[1.04]" />
+                  <article key={item._id} className="group flex h-full w-full flex-col rounded-[12px] border border-[#e5e5e5] bg-white transition-shadow duration-300 hover:shadow-sm">
+                    <Link href={`/product/${item.slug || item._id}`} className="relative block overflow-hidden rounded-t-[12px] border-b border-[#e5e5e5] bg-white">
+                      <div className="relative aspect-square overflow-hidden sm:aspect-[1.15/1]">
+                        <Image src={rImg} alt={item.title} fill sizes="(min-width: 1280px) 24vw, (min-width: 1024px) 32vw, 48vw" className="object-contain p-6 transition-transform duration-500 ease-out group-hover:scale-[1.02]" />
                       </div>
                     </Link>
-                    <div className="px-4 py-4">
-                      <Link href={`/product/${item.slug || item._id}`}>
-                        <h4 className="text-sm font-medium text-foreground line-clamp-1 transition-opacity group-hover:opacity-70">{item.title}</h4>
-                      </Link>
-                      <p className="mt-1 font-mono text-xs text-muted-foreground">{formatCurrency(item.price || 0)}</p>
+                    <div className="flex flex-1 flex-col px-4 py-4 sm:px-5 sm:py-5">
+                      <div className="flex-1">
+                        <Link href={`/product/${item.slug || item._id}`}>
+                          <h4 className="mb-1 font-sans text-[16px] font-medium leading-snug text-black transition-opacity hover:opacity-70">{item.title}</h4>
+                        </Link>
+                        <p className="font-sans text-[16px] text-[#737373]">{formatCurrency(item.price || 0)}</p>
+                      </div>
                     </div>
                   </article>
                 );

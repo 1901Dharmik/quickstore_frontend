@@ -1,38 +1,27 @@
 'use client';
 
 import { ForgotPasswordForm } from '@/components/auth/forgot-password-form';
-import { ShoppingCart } from 'lucide-react';
+import { RunningSeconds } from '@/components/ui/running-seconds';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function ForgotPasswordPage() {
   return (
-    <div className="grid min-h-screen grid-cols-1 md:grid-cols-2">
-      <div className="flex flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-        <div className="mx-auto w-full max-w-sm lg:w-96">
-          <div>
-            <Link href="/" className="flex items-center gap-2 font-bold text-xl mb-6">
-              <ShoppingCart className="h-6 w-6 text-primary" />
-              QuickStore
-            </Link>
-            <h2 className="text-3xl font-bold tracking-tight text-foreground">Reset your password</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Enter your email address and we will send you a link to reset your password.
-            </p>
-          </div>
-
-          <ForgotPasswordForm />
+    <div className="flex min-h-screen flex-col items-center justify-center bg-white px-6 py-16 sm:px-10">
+      <div className="w-full max-w-sm">
+        <div className="mb-10 flex flex-col items-center text-center">
+          <Link href="/" className="mb-8 flex items-center justify-center gap-2">
+            <Image src="https://cdn.quickstore88.com/quickstore/quickstore_log1.png" alt="QuickStore Icon" width={32} height={32} className="object-contain" />
+            <Image src="https://cdn.quickstore88.com/quickstore/quickstore_log2.png" alt="QuickStore" width={140} height={32} className="object-contain" />
+          </Link>
+          <h2 className="font-sans text-[28px] font-medium text-black">
+            Reset password
+          </h2>
+          <p className="mt-2 font-sans text-[14px] text-[#737373]">
+            Enter your email and we'll send a reset link.
+          </p>
         </div>
-      </div>
-      
-      <div className="relative hidden w-full md:block bg-muted">
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-900 text-zinc-50 p-10">
-          <div className="max-w-md space-y-4 text-center">
-            <h3 className="text-2xl font-bold tracking-tight">Regain access instantly</h3>
-            <p className="text-zinc-400">
-              Don't worry if you've forgotten your password. We'll get you back into your account safely and securely.
-            </p>
-          </div>
-        </div>
+        <ForgotPasswordForm />
       </div>
     </div>
   );

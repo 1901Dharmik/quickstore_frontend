@@ -1,83 +1,76 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { RunningSeconds } from '@/components/ui/running-seconds';
-
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12, delayChildren: 0.1 },
-  },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 18 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
-};
 
 export function HeroSection() {
-  return (
-    <section className="relative flex min-h-[92vh] w-full items-end overflow-hidden bg-foreground sm:min-h-screen">
-      <img
-        src="https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?q=80&w=1920&auto=format&fit=crop"
-        alt="A modern smartwatch, dial face detail"
-        className="absolute inset-0 h-full w-full object-cover object-center contrast-[1.05]"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-primary/20 backdrop-blur-[2px]" />
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.1 },
+    },
+  };
 
-      {/* Live seconds mark, top-right — the page opens already ticking */}
-      <div className="absolute right-4 top-6 z-10 sm:right-6 sm:top-8 lg:right-8">
-        <RunningSeconds size={26} label="Live" className="text-white/70" />
+  const item = {
+    hidden: { opacity: 0, y: 40 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+  };
+
+  return (
+    <section className="relative flex min-h-[85vh] flex-col items-center justify-center overflow-hidden bg-black px-4 py-24 sm:py-32 lg:px-8">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?q=80&w=2500&auto=format&fit=crop"
+          alt="Luxury Timepiece Background"
+          fill
+          priority
+          className="object-cover opacity-[0.55]"
+        />
+        {/* Subtle gradient overlay to ensure text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/80" />
       </div>
 
-      <motion.div
+      {/* Content */}
+      <motion.div 
         variants={container}
         initial="hidden"
         animate="show"
-        className="relative z-10 flex w-full flex-col px-4 pb-14 pt-24 sm:px-6 sm:pb-20 lg:px-8 lg:pb-24"
+        className="relative z-10 mx-auto flex w-full max-w-[900px] flex-col items-center text-center"
       >
-        <div className="mx-auto w-full max-w-[1600px]">
-          <motion.span
-            variants={item}
-            className="mb-4 inline-block rounded-full border border-primary/30 bg-primary/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.2em] text-primary backdrop-blur-md sm:text-xs"
-          >
+        <motion.div variants={item} className="mb-8 flex h-[32px] items-center justify-center rounded-full border border-white/20 bg-white/10 px-[16px] backdrop-blur-md">
+          <code className="font-mono text-[11px] sm:text-[12px] tracking-[0.2em] text-white/90 uppercase">
             Ref. No. 001 — The Future of Horology
-          </motion.span>
+          </code>
+        </motion.div>
 
-          <motion.h1
-            variants={item}
-            className="max-w-3xl font-display text-[13vw] font-bold leading-[0.95] tracking-tight text-foreground sm:text-6xl md:text-7xl lg:max-w-4xl lg:text-8xl"
+        <motion.div variants={item}>
+          <h1 className="font-display text-[44px] font-medium leading-[1.05] text-white sm:text-[64px] md:text-[80px] tracking-tight text-balance">
+            Masterpieces of precision
+          </h1>
+        </motion.div>
+
+        <motion.p variants={item} className="mt-8 max-w-lg text-center text-[16px] sm:text-[18px] text-white/70 leading-relaxed font-light text-balance">
+          A curated selection of modern smart timepieces, where advanced technology meets contemporary design and timeless elegance.
+        </motion.p>
+
+        <motion.div variants={item} className="mt-12 flex flex-col gap-4 sm:flex-row sm:gap-5 w-full sm:w-auto px-4 sm:px-0">
+          <Link
+            href="/shop"
+            className="group relative flex h-[52px] sm:w-[220px] items-center justify-center rounded-full bg-white px-[24px] font-sans text-[15px] font-medium text-black transition-all hover:scale-[1.02]"
           >
-            Masterpieces of <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">precision</span>
-          </motion.h1>
-
-          <motion.p
-            variants={item}
-            className="mt-6 max-w-md text-base font-light leading-relaxed text-muted-foreground sm:max-w-lg sm:text-lg"
+            Shop the collection
+            <div className="absolute inset-0 rounded-full bg-white opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-30" />
+          </Link>
+          <Link
+            href="/about"
+            className="flex h-[52px] sm:w-[220px] items-center justify-center rounded-full border border-white/20 bg-white/5 px-[24px] font-sans text-[15px] font-medium text-white backdrop-blur-sm transition-all hover:bg-white/10 hover:border-white/40"
           >
-            A curated selection of modern smart timepieces, where advanced
-            technology meets contemporary design.
-          </motion.p>
-
-          <motion.div variants={item} className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
-            <Link
-              href="/shop"
-              className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-primary px-7 py-4 font-mono text-xs font-semibold uppercase tracking-[0.1em] text-primary-foreground shadow-[0_0_20px_rgba(var(--primary),0.4)] transition-all hover:scale-105 hover:bg-primary/90 hover:shadow-[0_0_30px_rgba(var(--primary),0.6)]"
-            >
-              Shop the collection
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-            <Link
-              href="/about"
-              className="inline-flex items-center justify-center gap-2.5 rounded-full border border-border bg-background/50 px-7 py-4 font-mono text-xs font-semibold uppercase tracking-[0.1em] text-foreground backdrop-blur-md transition-colors hover:border-primary hover:bg-primary/10 hover:text-primary"
-            >
-              Discover tech
-            </Link>
-          </motion.div>
-        </div>
+            Discover tech
+          </Link>
+        </motion.div>
       </motion.div>
     </section>
   );

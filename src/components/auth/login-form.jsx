@@ -17,9 +17,9 @@ export function LoginForm() {
   };
 
   return (
-    <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+    <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="email" className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+        <label htmlFor="email" className="mb-2 block font-sans text-[14px] text-black">
           Email address
         </label>
         <input
@@ -31,17 +31,17 @@ export function LoginForm() {
           value={email}
           onChange={e => setEmail(e.target.value)}
           disabled={loginMutation.isPending}
-          className="w-full border border-border bg-background px-4 py-3 font-mono text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-foreground disabled:opacity-50"
+          className="h-12 w-full rounded-[12px] border border-[#e5e5e5] bg-white px-4 font-sans text-[14px] text-black placeholder:text-[#a3a3a3] focus:border-black focus:outline-none disabled:opacity-50 transition-colors"
         />
       </div>
 
       <div>
-        <div className="mb-1.5 flex items-center justify-between">
-          <label htmlFor="password" className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+        <div className="mb-2 flex items-center justify-between">
+          <label htmlFor="password" className="block font-sans text-[14px] text-black">
             Password
           </label>
-          <Link href="/auth/forgot-password" className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground">
-            Forgot?
+          <Link href="/auth/forgot-password" className="font-sans text-[12px] font-medium text-[#737373] transition-colors hover:text-black">
+            Forgot password?
           </Link>
         </div>
         <div className="relative">
@@ -54,13 +54,13 @@ export function LoginForm() {
             value={password}
             onChange={e => setPassword(e.target.value)}
             disabled={loginMutation.isPending}
-            className="w-full border border-border bg-background px-4 py-3 pr-11 font-mono text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-foreground disabled:opacity-50"
+            className="h-12 w-full rounded-[12px] border border-[#e5e5e5] bg-white px-4 pr-11 font-sans text-[14px] text-black placeholder:text-[#a3a3a3] focus:border-black focus:outline-none disabled:opacity-50 transition-colors"
           />
           <button
             type="button"
             onClick={() => setShowPassword(v => !v)}
             disabled={loginMutation.isPending}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-[#a3a3a3] transition-colors hover:text-black"
           >
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
@@ -70,15 +70,15 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={loginMutation.isPending}
-        className="w-full bg-foreground px-6 py-4 font-mono text-xs uppercase tracking-[0.2em] text-background transition-opacity hover:opacity-80 disabled:opacity-50"
+        className="flex h-12 w-full items-center justify-center rounded-full bg-black px-6 font-sans text-[14px] font-medium text-white transition-opacity hover:bg-[#090909] disabled:opacity-50"
       >
-        {loginMutation.isPending ? 'Signing in…' : 'Sign in'}
+        {loginMutation.isPending ? 'Logging in…' : 'Login'}
       </button>
 
-      <p className="text-center font-mono text-[11px] text-muted-foreground">
-        No account?{' '}
-        <Link href="/auth/register" className="text-foreground underline underline-offset-4 transition-opacity hover:opacity-60">
-          Sign up
+      <p className="text-center font-sans text-[14px] text-[#737373]">
+        Don't have an account?{' '}
+        <Link href="/auth/register" className="font-medium text-black transition-opacity hover:opacity-70">
+          Register
         </Link>
       </p>
     </form>

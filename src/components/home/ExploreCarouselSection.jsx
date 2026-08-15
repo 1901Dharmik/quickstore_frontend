@@ -3,12 +3,14 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useAddToCart } from '@/hooks/use-cart';
 
 function CarouselCard({ card }) {
   const addToCartMutation = useAddToCart();
+  const router = useRouter();
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -16,7 +18,7 @@ function CarouselCard({ card }) {
   };
 
   return (
-    <article className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:border-primary hover:shadow-[0_0_20px_rgba(var(--primary),0.1)]">
+    <article className="group flex h-full w-full flex-col overflow-hidden rounded-[12px] border border-border bg-card transition-colors duration-300 hover:border-[#000]">
       <Link href={card.href || '#'} className="relative block overflow-hidden border-b border-border bg-secondary">
         <div className="relative aspect-[1.15/1] overflow-hidden">
           <Image
@@ -32,20 +34,20 @@ function CarouselCard({ card }) {
       <div className="flex flex-1 flex-col px-5 py-5 sm:px-6 sm:py-6">
         <div className="min-h-14 flex-1">
           <Link href={card.href || '#'}>
-            <h4 className="text-base font-medium leading-snug text-foreground transition-opacity group-hover:opacity-70 md:text-lg">
+            <h4 className="text-[20px] font-medium leading-snug text-foreground transition-opacity hover:opacity-70">
               {card.title}
             </h4>
           </Link>
           {card.description ? (
-            <p className="mt-1.5 max-w-[28rem] text-xs leading-relaxed text-muted-foreground line-clamp-2">{card.description}</p>
+            <p className="mt-1.5 max-w-[28rem] text-[14px] leading-relaxed text-muted-foreground line-clamp-2">{card.description}</p>
           ) : null}
           {card.price ? (
-            <h6 className="mt-3 font-mono text-sm font-medium text-foreground">{card.price}</h6>
+            <h6 className="mt-3 font-mono text-[16px] font-medium text-foreground">{card.price}</h6>
           ) : null}
         </div>
 
         {card.hideLinks !== true && (
-          <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-border pt-4">
+          <div className="mt-4 flex flex-row gap-2 border-t border-border pt-4">
             {(card.links?.length ? card.links : [{ label: 'Know more', href: card.href }]).map((linkItem) => {
               if (linkItem.action === 'add_to_cart') {
                 return (
@@ -53,20 +55,23 @@ function CarouselCard({ card }) {
                     key={`${card.title}-${linkItem.label}`}
                     onClick={handleAddToCart}
                     disabled={addToCartMutation.isPending}
-                    className="font-mono text-[11px] uppercase tracking-[0.15em] text-foreground underline underline-offset-4 transition-opacity hover:opacity-60 disabled:opacity-30"
+                    className="flex h-9 flex-1 items-center justify-center rounded-full bg-black px-2 font-sans text-[13px] sm:text-[14px] font-medium text-white transition-colors hover:bg-[#090909] disabled:opacity-50"
                   >
                     {addToCartMutation.isPending ? 'Adding…' : linkItem.label}
                   </button>
                 );
               }
               return (
-                <Link
+                <button
                   key={`${card.title}-${linkItem.label}-${linkItem.href}`}
-                  href={linkItem.href}
-                  className="font-mono text-[11px] uppercase tracking-[0.15em] text-foreground underline underline-offset-4 transition-opacity hover:opacity-60"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push(linkItem.href);
+                  }}
+                  className="flex h-9 flex-1 items-center justify-center rounded-full border border-[#d4d4d4] bg-white px-2 font-sans text-[13px] sm:text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa]"
                 >
                   {linkItem.label}
-                </Link>
+                </button>
               );
             })}
           </div>
@@ -114,24 +119,18 @@ export default function ExploreCarouselSection({
     <section className={`${sectionClassName || ''} tick-track overflow-x-hidden bg-background py-14 sm:py-16 lg:py-20`}>
       <div ref={containerRef} className="mx-auto mb-8 max-w-[1600px] px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-2xl"
-          >
-            <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">{title}</h2>
+          <div className="max-w-2xl">
+            <h2 className="font-display text-[30px] font-medium tracking-tight text-foreground">{title}</h2>
             {description ? (
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">{description}</p>
+              <p className="mt-3 text-[16px] leading-relaxed text-muted-foreground">{description}</p>
             ) : null}
-          </motion.div>
+          </div>
 
           <div className="flex items-center gap-3">
             {viewAllHref && (
               <Link
                 href={viewAllHref}
-                className="hidden font-mono text-[11px] uppercase tracking-[0.15em] text-foreground underline underline-offset-4 sm:inline-block"
+                className="hidden font-sans text-[14px] font-medium text-muted-foreground underline underline-offset-4 hover:text-foreground sm:inline-block"
               >
                 {viewAllLabel}
               </Link>
@@ -140,7 +139,7 @@ export default function ExploreCarouselSection({
               <button
                 type="button"
                 onClick={() => scroll('left')}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition-all hover:bg-muted"
                 aria-label="Scroll left"
               >
                 <ArrowLeft className="h-4 w-4" />
@@ -148,7 +147,7 @@ export default function ExploreCarouselSection({
               <button
                 type="button"
                 onClick={() => scroll('right')}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition-all hover:bg-muted"
                 aria-label="Scroll right"
               >
                 <ArrowRight className="h-4 w-4" />
@@ -193,16 +192,6 @@ export default function ExploreCarouselSection({
           </Link>
         </div>
       )}
-
-      <style jsx>{`
-        .no-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </section>
   );
 }

@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
@@ -12,6 +13,7 @@ import { useAddToCart } from '@/hooks/use-cart';
 export function InfiniteProductScroll() {
   const { ref, inView } = useInView({ rootMargin: '400px 0px' });
   const addToCartMutation = useAddToCart();
+  const router = useRouter();
 
   const {
     data,
@@ -65,10 +67,7 @@ export function InfiniteProductScroll() {
     <section className="tick-track bg-background py-14 sm:py-16 lg:py-20">
       <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8">
         <div className="mb-10 text-center sm:mb-12">
-          <span className="mb-2 block font-mono text-[11px] uppercase tracking-[0.3em] text-primary">
-            Full catalog
-          </span>
-          <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="font-display text-[30px] font-medium tracking-tight text-foreground sm:text-[36px]">
             The product collection
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground sm:text-base">
@@ -84,23 +83,19 @@ export function InfiniteProductScroll() {
 
         <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
           {products.map((product, i) => (
-            <motion.article
+            <article
               key={`${product.id}-${i}`}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.45, delay: (i % 8) * 0.05, ease: [0.16, 1, 0.3, 1] }}
-              className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all duration-300 hover:scale-[1.02] hover:border-primary hover:shadow-[0_0_20px_rgba(var(--primary),0.15)]"
+              className="group flex h-full w-full flex-col overflow-hidden rounded-[12px] border border-border bg-card transition-colors duration-300 hover:border-[#000]"
             >
               <div className="relative block overflow-hidden border-b border-border bg-secondary">
                 <div className="pointer-events-none absolute left-2 top-2 z-10 flex flex-col gap-1.5 sm:left-3 sm:top-3">
                   {product.bestSeller && (
-                    <span className="rounded-full bg-primary px-2 py-1 font-mono text-[8px] font-bold uppercase tracking-wider text-primary-foreground shadow-sm sm:text-[9px]">
+                    <span className="rounded-full bg-primary px-3 py-1 font-sans text-[12px] font-medium text-primary-foreground shadow-sm">
                       Bestseller
                     </span>
                   )}
                   {product.newArrival && (
-                    <span className="rounded-full border border-primary/20 bg-background px-2 py-1 font-mono text-[8px] font-bold uppercase tracking-wider text-foreground shadow-sm sm:text-[9px]">
+                    <span className="rounded-full border border-border bg-background px-3 py-1 font-sans text-[12px] font-medium text-foreground shadow-sm">
                       New
                     </span>
                   )}
@@ -122,33 +117,36 @@ export function InfiniteProductScroll() {
               <div className="flex flex-1 flex-col px-3.5 py-3.5 sm:px-5 sm:py-5">
                 <div className="min-h-10 flex-1">
                   <Link href={product.href}>
-                    <h4 className="mb-2 text-sm font-medium leading-snug text-foreground transition-opacity group-hover:opacity-70 sm:text-base">
+                    <h4 className="mb-2 text-[18px] font-medium leading-snug text-foreground transition-opacity hover:opacity-70">
                       {product.title}
                     </h4>
                   </Link>
-                  <h6 className="font-mono text-xs font-medium text-foreground sm:text-sm">₹{product.price}</h6>
+                  <h6 className="font-mono text-[16px] font-medium text-foreground">₹{product.price}</h6>
                 </div>
 
-                <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-border pt-3">
+                <div className="mt-3 flex flex-row gap-2 border-t border-border pt-3">
                   <button
                     onClick={(e) => {
                       e.preventDefault();
                       addToCartMutation.mutate({ product_id: product.id, quantity: 1 });
                     }}
                     disabled={addToCartMutation.isPending}
-                    className="rounded-full bg-primary/10 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-primary transition-all hover:bg-primary hover:text-primary-foreground disabled:opacity-50 sm:text-[11px]"
+                    className="flex h-9 flex-1 items-center justify-center rounded-full bg-black px-2 font-sans text-[13px] sm:text-[14px] font-medium text-white transition-colors hover:bg-[#090909] disabled:opacity-50"
                   >
                     {addToCartMutation.isPending ? 'Adding…' : 'Add to cart'}
                   </button>
-                  <Link
-                    href={product.href}
-                    className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-muted-foreground underline-offset-4 transition-all hover:text-primary hover:underline sm:text-[11px]"
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(product.href);
+                    }}
+                    className="flex h-9 flex-1 items-center justify-center rounded-full border border-[#d4d4d4] bg-white px-2 font-sans text-[13px] sm:text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa]"
                   >
                     Know more
-                  </Link>
+                  </button>
                 </div>
               </div>
-            </motion.article>
+            </article>
           ))}
         </div>
 

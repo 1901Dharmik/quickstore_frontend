@@ -8,12 +8,12 @@ import { usePlaceOrder } from "@/hooks/use-order";
 function Field({ label, id, ...props }) {
   return (
     <div>
-      <label htmlFor={id} className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+      <label htmlFor={id} className="mb-2 block font-sans text-[14px] text-black">
         {label}
       </label>
       <input
         id={id}
-        className="h-12 w-full border border-border bg-background px-4 font-mono text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-foreground transition-colors"
+        className="h-12 w-full rounded-[12px] border border-[#e5e5e5] bg-white px-4 font-sans text-[14px] text-black placeholder:text-[#a3a3a3] focus:border-black focus:outline-none transition-colors"
         {...props}
       />
     </div>
@@ -66,23 +66,23 @@ export default function CheckoutForm({ onSuccess, coupon }) {
             <button
               type="button"
               onClick={() => i < step && setStep(i)}
-              className={`flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors ${
-                i === step ? "text-foreground"
-                  : i < step ? "cursor-pointer text-muted-foreground hover:text-foreground"
-                  : "cursor-default text-muted-foreground/40"
+              className={`flex items-center gap-2 font-sans text-[14px] font-medium transition-colors ${
+                i === step ? "text-black"
+                  : i < step ? "cursor-pointer text-[#737373] hover:text-black"
+                  : "cursor-default text-[#a3a3a3]"
               }`}
             >
-              <span className={`flex h-6 w-6 items-center justify-center border text-[10px] font-bold transition-colors ${
-                i === step ? "border-foreground bg-foreground text-background"
-                  : i < step ? "border-border bg-background text-muted-foreground"
-                  : "border-border bg-background text-muted-foreground/40"
+              <span className={`flex h-6 w-6 items-center justify-center rounded-full text-[12px] transition-colors ${
+                i === step ? "bg-black text-white"
+                  : i < step ? "bg-[#e5e5e5] text-black"
+                  : "bg-[#fafafa] text-[#a3a3a3]"
               }`}>
                 {i < step ? "✓" : i + 1}
               </span>
               <span className="hidden sm:inline">{s}</span>
             </button>
             {i < STEPS.length - 1 && (
-              <div className={`mx-3 h-px w-8 ${i < step ? "bg-border" : "bg-border/40"}`} />
+              <div className={`mx-3 h-px w-8 ${i < step ? "bg-[#d4d4d4]" : "bg-[#f5f5f5]"}`} />
             )}
           </div>
         ))}
@@ -90,8 +90,8 @@ export default function CheckoutForm({ onSuccess, coupon }) {
 
       {/* ── Step 0 — Shipping ── */}
       {step === 0 && (
-        <form onSubmit={handleShipping} className="space-y-5">
-          <p className="mb-5 border-b border-border pb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+        <form onSubmit={handleShipping} className="space-y-6">
+          <p className="mb-6 border-b border-[#e5e5e5] pb-4 font-sans text-[18px] font-medium text-black">
             Delivery Information
           </p>
           <div className="grid grid-cols-2 gap-4">
@@ -107,12 +107,12 @@ export default function CheckoutForm({ onSuccess, coupon }) {
           </div>
           <Field label="State" id="state" name="state" type="text" placeholder="Maharashtra" defaultValue={formData.state} required />
 
-          <div className="flex items-center justify-between pt-2">
-            <Link href="/cart" className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground">
-              <ArrowLeft className="h-3.5 w-3.5" /> Back to Cart
+          <div className="flex items-center justify-between pt-4">
+            <Link href="/cart" className="flex items-center gap-2 font-sans text-[14px] text-[#737373] transition-colors hover:text-black">
+              <ArrowLeft className="h-4 w-4" /> Back to Cart
             </Link>
-            <button type="submit" className="flex items-center gap-2 bg-foreground px-8 py-4 font-mono text-[10px] uppercase tracking-[0.15em] text-background transition-opacity hover:opacity-80">
-              Continue <ChevronRight className="h-3.5 w-3.5" />
+            <button type="submit" className="flex h-12 items-center justify-center gap-2 rounded-full bg-black px-8 font-sans text-[14px] font-medium text-white transition-opacity hover:opacity-80">
+              Continue <ChevronRight className="h-4 w-4" />
             </button>
           </div>
         </form>
@@ -120,52 +120,52 @@ export default function CheckoutForm({ onSuccess, coupon }) {
 
       {/* ── Step 1 — Payment ── */}
       {step === 1 && (
-        <div className="space-y-5">
-          <p className="mb-5 border-b border-border pb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+        <div className="space-y-6">
+          <p className="mb-6 border-b border-[#e5e5e5] pb-4 font-sans text-[18px] font-medium text-black">
             Payment Method
           </p>
 
           {/* COD — active/selected */}
-          <div className="flex w-full items-center gap-4 border-2 border-foreground bg-foreground p-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-background/10">
-              <Truck className="h-5 w-5 text-background" />
+          <div className="flex w-full items-center gap-4 rounded-[12px] border border-black p-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-[#fafafa]">
+              <Truck className="h-5 w-5 text-black" />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-medium text-background">Cash on Delivery</p>
-              <p className="mt-0.5 text-xs text-background/60">Pay when your order arrives</p>
+              <p className="font-sans text-[16px] font-medium text-black">Cash on Delivery</p>
+              <p className="mt-1 font-sans text-[14px] text-[#737373]">Pay when your order arrives (₹200 flat rate)</p>
             </div>
-            <div className="flex h-4 w-4 shrink-0 items-center justify-center border-2 border-background">
-              <div className="h-2 w-2 bg-background" />
+            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-black bg-black">
+              <div className="h-2 w-2 rounded-full bg-white" />
             </div>
           </div>
 
           {/* Online Payment — coming soon */}
-          <div className="flex w-full items-center gap-4 border-2 border-border bg-background p-4 opacity-60 cursor-not-allowed">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-secondary">
-              <Smartphone className="h-5 w-5 text-muted-foreground" />
+          <div className="flex w-full items-center gap-4 rounded-[12px] border border-[#e5e5e5] bg-[#fafafa] p-4 opacity-60 cursor-not-allowed">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] bg-white">
+              <Smartphone className="h-5 w-5 text-[#a3a3a3]" />
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <p className="text-sm font-medium text-foreground">Online Payment</p>
-                <span className="font-mono text-[9px] uppercase tracking-[0.15em] border border-border px-1.5 py-0.5 text-muted-foreground">
+                <p className="font-sans text-[16px] font-medium text-black">Online Payment</p>
+                <span className="rounded-full bg-white px-2 py-0.5 font-sans text-[10px] text-[#737373] border border-[#e5e5e5]">
                   Coming Soon
                 </span>
               </div>
-              <p className="mt-0.5 text-xs text-muted-foreground">UPI · Cards · Net Banking</p>
+              <p className="mt-1 font-sans text-[14px] text-[#737373]">UPI · Cards · Net Banking</p>
             </div>
-            <div className="flex h-4 w-4 shrink-0 items-center justify-center border-2 border-border" />
+            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#e5e5e5] bg-white" />
           </div>
 
-          <div className="flex items-center justify-between pt-2">
-            <button type="button" onClick={() => setStep(0)} className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground">
-              <ArrowLeft className="h-3.5 w-3.5" /> Back
+          <div className="flex items-center justify-between pt-4">
+            <button type="button" onClick={() => setStep(0)} className="flex items-center gap-2 font-sans text-[14px] text-[#737373] transition-colors hover:text-black">
+              <ArrowLeft className="h-4 w-4" /> Back
             </button>
             <button
               type="button"
               onClick={() => setStep(2)}
-              className="flex items-center gap-2 bg-foreground px-8 py-4 font-mono text-[10px] uppercase tracking-[0.15em] text-background transition-opacity hover:opacity-80"
+              className="flex h-12 items-center justify-center gap-2 rounded-full bg-black px-8 font-sans text-[14px] font-medium text-white transition-opacity hover:opacity-80"
             >
-              Review Order <ChevronRight className="h-3.5 w-3.5" />
+              Review Order <ChevronRight className="h-4 w-4" />
             </button>
           </div>
         </div>
@@ -173,64 +173,64 @@ export default function CheckoutForm({ onSuccess, coupon }) {
 
       {/* ── Step 2 — Review ── */}
       {step === 2 && (
-        <div className="space-y-5">
-          <p className="mb-5 border-b border-border pb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+        <div className="space-y-6">
+          <p className="mb-6 border-b border-[#e5e5e5] pb-4 font-sans text-[18px] font-medium text-black">
             Review & Confirm
           </p>
 
           {/* Shipping summary */}
-          <div className="border border-border">
-            <div className="flex items-center justify-between border-b border-border bg-secondary px-4 py-3">
-              <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">Shipping To</span>
-              <button onClick={() => setStep(0)} className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground">Edit</button>
+          <div className="rounded-[12px] border border-[#e5e5e5] overflow-hidden">
+            <div className="flex items-center justify-between border-b border-[#e5e5e5] bg-[#fafafa] px-4 py-3">
+              <span className="font-sans text-[14px] font-medium text-[#737373]">Shipping To</span>
+              <button onClick={() => setStep(0)} className="font-sans text-[14px] text-[#737373] transition-colors hover:text-black">Edit</button>
             </div>
-            <div className="space-y-0.5 px-4 py-3">
-              <p className="text-sm font-medium text-foreground">{formData.first_name} {formData.last_name}</p>
-              <p className="text-xs text-muted-foreground">{formData.address}, {formData.city}, {formData.state} — {formData.pincode}</p>
-              <p className="text-xs text-muted-foreground">{formData.phone}{formData.email ? ` · ${formData.email}` : ""}</p>
+            <div className="space-y-1 px-4 py-4">
+              <p className="font-sans text-[16px] font-medium text-black">{formData.first_name} {formData.last_name}</p>
+              <p className="font-sans text-[14px] text-[#737373]">{formData.address}, {formData.city}, {formData.state} — {formData.pincode}</p>
+              <p className="font-sans text-[14px] text-[#737373]">{formData.phone}{formData.email ? ` · ${formData.email}` : ""}</p>
             </div>
           </div>
 
           {/* Payment summary */}
-          <div className="border border-border">
-            <div className="flex items-center justify-between border-b border-border bg-secondary px-4 py-3">
-              <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">Payment</span>
-              <button onClick={() => setStep(1)} className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground">Edit</button>
+          <div className="rounded-[12px] border border-[#e5e5e5] overflow-hidden">
+            <div className="flex items-center justify-between border-b border-[#e5e5e5] bg-[#fafafa] px-4 py-3">
+              <span className="font-sans text-[14px] font-medium text-[#737373]">Payment</span>
+              <button onClick={() => setStep(1)} className="font-sans text-[14px] text-[#737373] transition-colors hover:text-black">Edit</button>
             </div>
-            <div className="px-4 py-3">
-              <p className="text-sm font-medium text-foreground">Cash on Delivery</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">Pay when your order arrives</p>
+            <div className="px-4 py-4">
+              <p className="font-sans text-[16px] font-medium text-black">Cash on Delivery</p>
+              <p className="mt-1 font-sans text-[14px] text-[#737373]">Pay when your order arrives</p>
             </div>
           </div>
 
           {/* Coupon */}
           {coupon?.code && (
-            <div className="border border-border">
-              <div className="border-b border-border bg-secondary px-4 py-3">
-                <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">Coupon Applied</span>
+            <div className="rounded-[12px] border border-[#e5e5e5] overflow-hidden">
+              <div className="border-b border-[#e5e5e5] bg-[#fafafa] px-4 py-3">
+                <span className="font-sans text-[14px] font-medium text-[#737373]">Coupon Applied</span>
               </div>
-              <div className="px-4 py-3">
-                <p className="font-mono text-sm font-medium text-foreground">{coupon.code}</p>
+              <div className="px-4 py-4">
+                <p className="font-sans text-[16px] font-medium text-black">{coupon.code}</p>
                 {coupon.discount > 0 && (
-                  <p className="mt-0.5 text-xs text-muted-foreground">−₹{coupon.discount.toLocaleString("en-IN")} discount</p>
+                  <p className="mt-1 font-sans text-[14px] text-[#737373]">−₹{coupon.discount.toLocaleString("en-IN")} discount</p>
                 )}
                 {coupon.free_shipping && (
-                  <p className="mt-0.5 text-xs text-muted-foreground">Free shipping applied</p>
+                  <p className="mt-1 font-sans text-[14px] text-[#737373]">Free shipping applied</p>
                 )}
               </div>
             </div>
           )}
 
-          <div className="flex items-center justify-between pt-2">
-            <button type="button" onClick={() => setStep(1)} className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground">
-              <ArrowLeft className="h-3.5 w-3.5" /> Back
+          <div className="flex items-center justify-between pt-4">
+            <button type="button" onClick={() => setStep(1)} className="flex items-center gap-2 font-sans text-[14px] text-[#737373] transition-colors hover:text-black">
+              <ArrowLeft className="h-4 w-4" /> Back
             </button>
             <button
               onClick={handleSubmit}
               disabled={isPending}
-              className="flex items-center gap-2 bg-foreground px-8 py-4 font-mono text-[10px] uppercase tracking-[0.15em] text-background transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex h-12 items-center justify-center gap-2 rounded-full bg-black px-8 font-sans text-[14px] font-medium text-white transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40"
             >
-              <Lock className="h-3.5 w-3.5" />
+              <Lock className="h-4 w-4" />
               {isPending ? "Placing Order…" : "Place Order"}
             </button>
           </div>

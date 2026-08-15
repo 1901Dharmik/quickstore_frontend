@@ -80,7 +80,17 @@ function ProductCard({ product }) {
               {product.title}
             </h4>
           </Link>
-          <p className="font-sans text-[16px] text-[#737373]">{formatCurrency(product.price)}</p>
+          <div className="flex items-center gap-2">
+            <p className="font-sans text-[16px] font-medium text-[#111111]">{formatCurrency(product.price)}</p>
+            {product.originalPrice > product.price && (
+              <>
+                <p className="font-sans text-[14px] text-[#a3a3a3] line-through">{formatCurrency(product.originalPrice)}</p>
+                <span className="rounded-sm bg-red-50 px-1.5 py-0.5 font-sans text-[11px] font-bold text-red-600">
+                  −{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
+                </span>
+              </>
+            )}
+          </div>
         </div>
         <div className="mt-4 flex flex-row gap-2 border-t border-[#e5e5e5] pt-4">
           <button
@@ -154,6 +164,7 @@ export default function ShopPage() {
       slug: p.slug || p._id,
       title: p.title || 'Product',
       price: p.price || 0,
+      originalPrice: p.compare_at_price || p.attributes?.compare_at_price || p.price || 0,
       thumbnail: p.images?.[0]?.url || 'https://images.unsplash.com/photo-1548171915-e79a380a2a4b?q=80&w=800',
       category: p.categories?.[0]?.slug || 'uncategorized',
       brandSlug: p.brand?.slug || 'generic',
@@ -285,6 +296,14 @@ export default function ShopPage() {
                 {f.label} <X className="h-3 w-3" />
               </button>
             ))}
+            {activeFilters.length > 1 && (
+              <button
+                onClick={clearAll}
+                className="flex h-7 items-center rounded-full px-3 font-sans text-[12px] font-medium text-[#737373] underline underline-offset-4 transition-colors hover:text-black"
+              >
+                Clear all
+              </button>
+            )}
           </div>
         )}
 

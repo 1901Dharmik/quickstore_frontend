@@ -42,7 +42,17 @@ function CarouselCard({ card }) {
             <p className="mt-1.5 max-w-[28rem] text-[14px] leading-relaxed text-muted-foreground line-clamp-2">{card.description}</p>
           ) : null}
           {card.price ? (
-            <h6 className="mt-3 font-mono text-[16px] font-medium text-foreground">{card.price}</h6>
+            <div className="mt-3 flex items-center gap-2">
+              <h6 className="font-mono text-[16px] font-medium text-foreground">{card.price}</h6>
+              {card.originalPrice > card.rawPrice && (
+                <>
+                  <p className="font-mono text-[14px] text-muted-foreground line-through">₹{card.originalPrice.toLocaleString('en-IN')}</p>
+                  <span className="rounded-sm bg-red-50 px-1.5 py-0.5 font-sans text-[11px] font-bold text-red-600">
+                    −{Math.round(((card.originalPrice - card.rawPrice) / card.originalPrice) * 100)}%
+                  </span>
+                </>
+              )}
+            </div>
           ) : null}
         </div>
 

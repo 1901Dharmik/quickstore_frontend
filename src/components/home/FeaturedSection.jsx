@@ -51,7 +51,9 @@ export function FeaturedSection() {
     return {
       id: item._id,
       title: item.title || "Watch",
-      price: `₹${price}`,
+      price: `₹${price.toLocaleString('en-IN')}`,
+      rawPrice: price,
+      originalPrice: item.compare_at_price || item.attributes?.compare_at_price || price,
       image: resolveUrl(item.images) || "https://images.unsplash.com/photo-1548171915-e79a380a2a4b?q=80&w=800",
       alt: item.title || "Watch",
       href: `/product/${item.slug || item._id}`,

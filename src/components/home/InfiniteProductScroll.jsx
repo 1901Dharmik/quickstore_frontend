@@ -53,7 +53,9 @@ export function InfiniteProductScroll() {
       return {
         id: item._id,
         title: item.title || 'Product',
-        price: item.price || '0.00',
+        price: item.price || 0,
+        rawPrice: item.price || 0,
+        originalPrice: item.compare_at_price || item.attributes?.compare_at_price || item.price || 0,
         image: imageUrl,
         alt: item.title || 'Product',
         href: `/product/${item.slug || item._id}`,
@@ -121,7 +123,17 @@ export function InfiniteProductScroll() {
                       {product.title}
                     </h4>
                   </Link>
-                  <h6 className="font-mono text-[16px] font-medium text-foreground">₹{product.price}</h6>
+                  <div className="flex items-center gap-2">
+                    <h6 className="font-mono text-[16px] font-medium text-foreground">₹{product.price.toLocaleString('en-IN')}</h6>
+                    {product.originalPrice > product.rawPrice && (
+                      <>
+                        <p className="font-mono text-[14px] text-muted-foreground line-through">₹{product.originalPrice.toLocaleString('en-IN')}</p>
+                        <span className="rounded-sm bg-red-50 px-1.5 py-0.5 font-sans text-[11px] font-bold text-red-600">
+                          −{Math.round(((product.originalPrice - product.rawPrice) / product.originalPrice) * 100)}%
+                        </span>
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 <div className="mt-3 flex flex-row gap-2 border-t border-border pt-3">

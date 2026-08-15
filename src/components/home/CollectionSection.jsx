@@ -45,11 +45,15 @@ export function CollectionSection() {
       imageUrl = item.images[0].url;
     }
 
+    const price = item.price || 0;
+
     return {
       id: item._id,
       title: item.title || "Product",
       description: item.description,
-      price: `₹${item.price || 0}`,
+      price: `₹${price.toLocaleString('en-IN')}`,
+      rawPrice: price,
+      originalPrice: item.compare_at_price || item.attributes?.compare_at_price || price,
       image: imageUrl,
       alt: item.title || "Product",
       href: `/product/${item.slug || item._id}`,

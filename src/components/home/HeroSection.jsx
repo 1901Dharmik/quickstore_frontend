@@ -34,7 +34,7 @@ export function HeroSection() {
       </div>
 
       {/* Content */}
-      <motion.div 
+      <motion.div
         variants={container}
         initial="hidden"
         animate="show"

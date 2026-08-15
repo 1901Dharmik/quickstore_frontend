@@ -5,6 +5,7 @@ import { BestsellerSection } from '@/components/home/BestsellerSection';
 import { NewArrivalSection } from '@/components/home/NewArrivalSection';
 import { FeaturedSection } from '@/components/home/FeaturedSection';
 import { InfiniteProductScroll } from '@/components/home/InfiniteProductScroll';
+import { PromotionalSection } from '@/components/home/PromotionalSection';
 
 export const metadata = {
   title: "QuickStore — The Art of Horology",
@@ -39,6 +40,7 @@ const Page = () => {
       <CategorySection />
       <BestsellerSection />
       <NewArrivalSection />
+      <PromotionalSection />
       <FeaturedSection />
       <InfiniteProductScroll />
     </main>

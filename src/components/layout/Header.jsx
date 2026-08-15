@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { Search, Menu, X, Tag, LayoutGrid, ShoppingCart } from 'lucide-react';
+import { Search, Menu, X, Tag, LayoutGrid, ShoppingCart, User } from 'lucide-react';
 import { useUser, useLogout } from '@/hooks/use-auth';
 import { useQuery } from '@tanstack/react-query';
 import { fetchProducts } from '@/api/product';
@@ -122,7 +122,7 @@ const Header = () => {
                 <Menu className="h-5 w-5" />
               </button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[85vw] max-w-xs border-r border-[#e5e5e5] bg-white p-0 sm:max-w-sm">
+            <SheetContent side="left" showCloseButton={false} className="w-[85vw] max-w-xs border-r border-[#e5e5e5] bg-white p-0 sm:max-w-sm">
               <div className="flex h-14 items-center justify-between border-b border-[#e5e5e5] px-5">
                 <Link href="/" className="flex items-center gap-2">
                   <Image src="https://cdn.quickstore88.com/quickstore/quickstore_log1.png" alt="QuickStore Icon" width={24} height={24} className="object-contain" />
@@ -208,6 +208,22 @@ const Header = () => {
             <Search className="h-5 w-5" />
           </button>
 
+          {/* Mobile Actions */}
+          <div className="flex sm:hidden items-center gap-1 ml-1">
+            <Link href={isAuthenticated ? "/profile" : "/auth/login"} className="p-2 text-black transition-colors hover:bg-[#f5f5f5] rounded-full">
+              <User className="h-5 w-5" />
+            </Link>
+            <Link href="/cart" className="relative p-2 text-black transition-colors hover:bg-[#f5f5f5] rounded-full">
+              <ShoppingCart className="h-5 w-5" />
+              {cartCount > 0 && (
+                <span className="absolute top-0 right-0 flex h-4 min-w-4 items-center justify-center rounded-full bg-black px-[3px] font-mono text-[9px] font-bold text-white ring-2 ring-white shadow-sm">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+          </div>
+
+          {/* Desktop Actions */}
           <div className="hidden sm:flex items-center gap-3 ml-2">
             {!isAuthenticated ? (
               <>

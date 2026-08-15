@@ -95,7 +95,7 @@ function ProductCard({ product }) {
               e.preventDefault();
               router.push(`/product/${product.slug || product.id}`);
             }}
-            className="flex h-9 flex-1 items-center justify-center rounded-full border border-[#d4d4d4] bg-white px-2 font-sans text-[13px] sm:text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa]"
+            className="hidden md:block flex h-9 flex-1 items-center justify-center rounded-full border border-[#d4d4d4] bg-white px-2 font-sans text-[13px] sm:text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa]"
           >
             Know more
           </button>
@@ -250,7 +250,7 @@ export default function ShopPage() {
               {filteredProducts.length} {filteredProducts.length === 1 ? 'item' : 'items'} found
             </p>
           </div>
-          
+
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(o => !o)}

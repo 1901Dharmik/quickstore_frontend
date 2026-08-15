@@ -140,7 +140,7 @@ export function InfiniteProductScroll() {
                       e.preventDefault();
                       router.push(product.href);
                     }}
-                    className="flex h-9 flex-1 items-center justify-center rounded-full border border-[#d4d4d4] bg-white px-2 font-sans text-[13px] sm:text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa]"
+                    className="hidden md:block flex h-9 flex-1 items-center justify-center rounded-full border border-[#d4d4d4] bg-white px-2 font-sans text-[13px] sm:text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa]"
                   >
                     Know more
                   </button>

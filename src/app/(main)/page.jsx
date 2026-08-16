@@ -44,8 +44,8 @@ const Page = () => {
       <GenderCategorySection />
       
       {/* Xiaomi Style Sections */}
-      {/* <WatchTabbedSection />
-      <MoreRecommendationsSection /> */}
+      {/* <WatchTabbedSection /> */}
+      {/* <MoreRecommendationsSection /> */}
       
       {/* Original Sections */}
       <CategorySection />

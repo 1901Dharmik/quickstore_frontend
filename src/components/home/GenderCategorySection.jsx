@@ -78,7 +78,7 @@ export const GenderCategorySection = () => {
               className="w-full"
             >
               <Link 
-                href={`/shop?category=${category.slug}`} 
+                href={`/shop?gender=${category.slug}`} 
                 className="group relative flex flex-col aspect-square w-full overflow-hidden rounded-2xl md:rounded-3xl bg-neutral-900 border border-black/5 dark:border-white/5 shadow-sm hover:shadow-xl transition-all duration-500"
               >
                 {/* Background Image - Aspect Square means no cropping! */}

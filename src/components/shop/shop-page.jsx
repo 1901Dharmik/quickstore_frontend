@@ -152,6 +152,7 @@ export default function ShopPage() {
   const deferredSearch = useDeferredValue(search);
   const [category, setCategory] = useState(searchParams.get('category') || 'all');
   const [brand, setBrand] = useState(searchParams.get('brand') || 'all');
+  const [gender, setGender] = useState(searchParams.get('gender') || 'all');
   const [priceBand, setPriceBand] = useState('all');
   const [sortBy, setSortBy] = useState('featured');
   const [page, setPage] = useState(1);
@@ -175,14 +176,17 @@ export default function ShopPage() {
       thumbnail: p.images?.[0]?.url || 'https://images.unsplash.com/photo-1548171915-e79a380a2a4b?q=80&w=800',
       categories: p.categories?.map(c => c.slug) || ['uncategorized'],
       brandSlug: p.brand?.slug || 'generic',
+      gender: p.gender || 'man',
     }));
   }, [rawProductsRes]);
 
   useEffect(() => {
     const urlCat = searchParams.get('category');
     const urlBrand = searchParams.get('brand');
+    const urlGender = searchParams.get('gender');
     if (urlCat) setCategory(urlCat);
     if (urlBrand) setBrand(urlBrand);
+    if (urlGender) setGender(urlGender);
   }, [searchParams]);
 
   const categoryOptions = useMemo(() => [
@@ -195,21 +199,30 @@ export default function ShopPage() {
     ...fetchedBrands.map(b => ({ value: b.slug, label: b.name || b.slug })),
   ], [fetchedBrands]);
 
+  const genderOptions = [
+    { value: 'all', label: 'All Genders' },
+    { value: 'man', label: 'Men' },
+    { value: 'woman', label: 'Women' },
+    { value: 'couple', label: 'Couple' },
+    { value: 'kids', label: 'Kids' }
+  ];
+
   const filteredProducts = useMemo(() => {
     const q = deferredSearch.trim().toLowerCase();
     const filtered = products.filter(p => {
       const matchSearch = !q || p.title.toLowerCase().includes(q);
       const matchCat = category === 'all' || p.categories.includes(category);
       const matchBrand = brand === 'all' || p.brandSlug === brand;
+      const matchGender = gender === 'all' || p.gender === gender;
       const matchPrice = matchesPriceBand(p.price, priceBand);
-      return matchSearch && matchCat && matchBrand && matchPrice;
+      return matchSearch && matchCat && matchBrand && matchGender && matchPrice;
     });
     const sorted = [...filtered];
     if (sortBy === 'price-asc') sorted.sort((a, b) => a.price - b.price);
     else if (sortBy === 'price-desc') sorted.sort((a, b) => b.price - a.price);
     else if (sortBy === 'title-asc') sorted.sort((a, b) => a.title.localeCompare(b.title));
     return sorted;
-  }, [products, deferredSearch, category, brand, priceBand, sortBy]);
+  }, [products, deferredSearch, category, brand, gender, priceBand, sortBy]);
 
   const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE));
   const visibleProducts = filteredProducts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -219,16 +232,17 @@ export default function ShopPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  useEffect(() => { setPage(1); }, [deferredSearch, category, brand, priceBand, sortBy]);
+  useEffect(() => { setPage(1); }, [deferredSearch, category, brand, gender, priceBand, sortBy]);
 
   const activeFilters = [
     category !== 'all' && { label: categoryOptions.find(c => c.value === category)?.label || category, clear: () => setCategory('all') },
     brand !== 'all' && { label: brandOptions.find(b => b.value === brand)?.label || brand, clear: () => setBrand('all') },
+    gender !== 'all' && { label: genderOptions.find(g => g.value === gender)?.label || gender, clear: () => setGender('all') },
     priceBand !== 'all' && { label: PRICE_FILTERS.find(p => p.value === priceBand)?.label || priceBand, clear: () => setPriceBand('all') },
     search && { label: `"${search}"`, clear: () => setSearch('') },
   ].filter(Boolean);
 
-  const clearAll = () => startTransition(() => { setSearch(''); setCategory('all'); setBrand('all'); setPriceBand('all'); setSortBy('featured'); setPage(1); });
+  const clearAll = () => startTransition(() => { setSearch(''); setCategory('all'); setBrand('all'); setGender('all'); setPriceBand('all'); setSortBy('featured'); setPage(1); });
 
   if (loading && products.length === 0 && !isError) return <ShopSkeleton />;
 
@@ -245,6 +259,7 @@ export default function ShopPage() {
       </div>
       <FilterSelect value={category} onChange={v => startTransition(() => setCategory(v))} options={categoryOptions} />
       <FilterSelect value={brand} onChange={v => startTransition(() => setBrand(v))} options={brandOptions} />
+      <FilterSelect value={gender} onChange={v => startTransition(() => setGender(v))} options={genderOptions} />
       <FilterSelect value={priceBand} onChange={v => startTransition(() => setPriceBand(v))} options={PRICE_FILTERS} />
       <FilterSelect value={sortBy} onChange={v => startTransition(() => setSortBy(v))} options={SORT_OPTIONS} />
       {activeFilters.length > 0 && (

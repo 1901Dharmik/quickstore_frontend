@@ -6,6 +6,9 @@ import { NewArrivalSection } from '@/components/home/NewArrivalSection';
 import { FeaturedSection } from '@/components/home/FeaturedSection';
 import { InfiniteProductScroll } from '@/components/home/InfiniteProductScroll';
 import { PromotionalSection } from '@/components/home/PromotionalSection';
+import { WatchTabbedSection } from '@/components/home/WatchTabbedSection';
+import { MoreRecommendationsSection } from '@/components/home/MoreRecommendationsSection';
+import { TrustBadgesSection } from '@/components/home/TrustBadgesSection';
 
 export const metadata = {
   title: "QuickStore — The Art of Horology",
@@ -37,12 +40,21 @@ const Page = () => {
     <main className="flex min-h-screen flex-col bg-background">
       <HeroSection />
       <BrandSection />
+      
+      {/* Xiaomi Style Sections */}
+      <WatchTabbedSection />
+      <MoreRecommendationsSection />
+      
+      {/* Original Sections */}
       <CategorySection />
       <BestsellerSection />
       <NewArrivalSection />
       <PromotionalSection />
       <FeaturedSection />
       <InfiniteProductScroll />
+      
+      {/* Footer pre-cursor */}
+      <TrustBadgesSection />
     </main>
   );
 };

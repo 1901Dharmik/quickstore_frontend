@@ -1,77 +1,194 @@
 "use client";
 
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const SLIDES = [
+  {
+    id: 1,
+    title: 'Smart Band 8 Pro',
+    subtitle: 'Fitness meets fashion.',
+    imageDesktop: 'https://i03.appmifile.com/746_operator_in/31/10/2025/142dc46d9468f897fb5e35ec682d5a41.jpg?thumb=1&w=5120&f=webp&q=85',
+    imageMobile: 'https://i03.appmifile.com/746_operator_in/31/10/2025/142dc46d9468f897fb5e35ec682d5a41.jpg?thumb=1&w=5120&f=webp&q=85',
+    link: '/shop',
+    align: 'left',
+    color: 'text-white', // Text color based on background darkness
+    overlay: 'bg-black/40',
+  },
+  {
+    id: 2,
+    title: 'Watch S3 Series',
+    subtitle: 'Interchangeable bezels. A new twist on time.',
+    imageDesktop: 'https://i03.appmifile.com/228_operator_in/31/10/2025/6d6bfd8ba026c2b2c5bf59c52a145220.jpg?thumb=1&w=5120&f=webp&q=85',
+    imageMobile: 'https://i03.appmifile.com/228_operator_in/31/10/2025/6d6bfd8ba026c2b2c5bf59c52a145220.jpg?thumb=1&w=5120&f=webp&q=85',
+    link: '/shop',
+    align: 'left',
+    color: 'text-white',
+    overlay: 'bg-black/30',
+  },
+  {
+    id: 3,
+    title: 'Active Life 2',
+    subtitle: 'Unleash your potential with 150+ sports modes.',
+    imageDesktop: 'https://i03.appmifile.com/746_operator_in/31/10/2025/142dc46d9468f897fb5e35ec682d5a41.jpg?thumb=1&w=5120&f=webp&q=85',
+    imageMobile: 'https://i03.appmifile.com/746_operator_in/31/10/2025/142dc46d9468f897fb5e35ec682d5a41.jpg?thumb=1&w=5120&f=webp&q=85',
+    link: '/shop',
+    align: 'center', // Just to show variety like Mi sometimes does
+    color: 'text-black',
+    overlay: 'bg-white/20',
+  },
+];
 
 export function HeroSection() {
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.1 },
-    },
-  };
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 30 }, [
+    Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true }),
+  ]);
+  
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
-  const item = {
-    hidden: { opacity: 0, y: 40 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
-  };
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
+  }, [emblaApi, onSelect]);
+
+  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+  const scrollTo = useCallback((index) => emblaApi && emblaApi.scrollTo(index), [emblaApi]);
 
   return (
-    <section className="relative flex min-h-[85vh] flex-col items-center justify-center overflow-hidden bg-black px-4 py-24 sm:py-32 lg:px-8">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?q=80&w=2500&auto=format&fit=crop"
-          alt="Luxury Timepiece Background"
-          fill
-          priority
-          className="object-cover opacity-[0.55]"
-        />
-        {/* Subtle gradient overlay to ensure text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/80" />
+    <section 
+      className="relative w-full h-[520px] md:h-[476px] overflow-hidden bg-black"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="overflow-hidden h-full w-full" ref={emblaRef}>
+        <div className="flex h-full w-full touch-pan-y">
+          {SLIDES.map((slide, index) => (
+            <div key={slide.id} className="relative flex-[0_0_100%] h-full w-full min-w-0">
+              
+              {/* Desktop Image */}
+              <div className="hidden md:block absolute inset-0">
+                <Image
+                  src={slide.imageDesktop}
+                  alt={slide.title}
+                  fill
+                  priority={index === 0}
+                  className="object-cover"
+                />
+              </div>
+              
+              {/* Mobile Image */}
+              <div className="md:hidden absolute inset-0">
+                <Image
+                  src={slide.imageMobile}
+                  alt={slide.title}
+                  fill
+                  priority={index === 0}
+                  className="object-cover"
+                />
+              </div>
+
+              {/* Overlay for legibility if needed */}
+              <div className={`absolute inset-0 ${slide.overlay}`} />
+
+              {/* Content Wrapper */}
+              <div className="absolute inset-0 z-10 flex items-center justify-center">
+                <div className={`w-full max-w-[1226px] px-6 md:px-8 h-full flex flex-col justify-start md:justify-center ${
+                  slide.align === 'center' ? 'items-center text-center' : 'items-center md:items-start text-center md:text-left'
+                } pt-[60px] md:pt-0`}>
+                  
+                  <h2 className={`font-sans font-bold text-[28px] md:text-[36px] tracking-tight mb-2 md:mb-3 ${slide.color}`}>
+                    {slide.title}
+                  </h2>
+                  
+                  <p className={`font-sans text-[16px] md:text-[18px] mb-6 md:mb-8 max-w-lg ${slide.color} opacity-90`}>
+                    {slide.subtitle}
+                  </p>
+                  
+                  <Link 
+                    href={slide.link}
+                    className="inline-flex h-[36px] md:h-[40px] items-center justify-center rounded-xl bg-[#262626] hover:bg-[#404040] text-white px-6 md:px-8 font-sans text-[14px] transition-colors"
+                  >
+                    Learn more
+                  </Link>
+                </div>
+              </div>
+
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Content */}
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className="relative z-10 mx-auto flex w-full max-w-[900px] flex-col items-center text-center"
+      {/* Side Navigation Arrows (Desktop Only) */}
+      <div 
+        className={`hidden md:flex absolute inset-y-0 left-0 w-24 items-center justify-start pl-4 z-20 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
       >
-        <motion.div variants={item} className="mb-8 flex h-[32px] items-center justify-center rounded-full border border-white/20 bg-white/10 px-[16px] backdrop-blur-md">
-          <code className="font-mono text-[11px] sm:text-[12px] tracking-[0.2em] text-white/90 uppercase">
-            Ref. No. 001 — The Future of Horology
-          </code>
-        </motion.div>
+        <button 
+          onClick={scrollPrev}
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-black/20 text-white/70 hover:bg-black/40 hover:text-white transition-all backdrop-blur-sm"
+        >
+          <ChevronLeft className="h-8 w-8" />
+        </button>
+      </div>
 
-        <motion.div variants={item}>
-          <h1 className="font-display text-[44px] font-medium leading-[1.05] text-white sm:text-[64px] md:text-[80px] tracking-tight text-balance">
-            Masterpieces of precision
-          </h1>
-        </motion.div>
+      <div 
+        className={`hidden md:flex absolute inset-y-0 right-0 w-24 items-center justify-end pr-4 z-20 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}
+      >
+        <button 
+          onClick={scrollNext}
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-black/20 text-white/70 hover:bg-black/40 hover:text-white transition-all backdrop-blur-sm"
+        >
+          <ChevronRight className="h-8 w-8" />
+        </button>
+      </div>
 
-        <motion.p variants={item} className="mt-8 max-w-lg text-center text-[16px] sm:text-[18px] text-white/70 leading-relaxed font-light text-balance">
-          A curated selection of modern smart timepieces, where advanced technology meets contemporary design and timeless elegance.
-        </motion.p>
-
-        <motion.div variants={item} className="mt-12 flex flex-col gap-4 sm:flex-row sm:gap-5 w-full sm:w-auto px-4 sm:px-0">
-          <Link
-            href="/shop"
-            className="group relative flex h-[52px] sm:w-[220px] items-center justify-center rounded-full bg-white px-[24px] font-sans text-[15px] font-medium text-black transition-all hover:scale-[1.02]"
+      {/* Custom Bottom Progress Indicators */}
+      <div className="absolute bottom-4 md:bottom-6 left-0 right-0 z-20 flex justify-center gap-1.5 md:gap-2 px-4">
+        {SLIDES.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => scrollTo(index)}
+            className="group relative h-1 w-10 md:w-16 overflow-hidden rounded-full bg-white/30 backdrop-blur-sm cursor-pointer transition-all"
+            aria-label={`Go to slide ${index + 1}`}
           >
-            Shop the collection
-            <div className="absolute inset-0 rounded-full bg-white opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-30" />
-          </Link>
-          <Link
-            href="/about"
-            className="flex h-[52px] sm:w-[220px] items-center justify-center rounded-full border border-white/20 bg-white/5 px-[24px] font-sans text-[15px] font-medium text-white backdrop-blur-sm transition-all hover:bg-white/10 hover:border-white/40"
-          >
-            Discover tech
-          </Link>
-        </motion.div>
-      </motion.div>
+            {/* Base Hover State */}
+            <div className="absolute inset-0 bg-white/20 opacity-0 transition-opacity group-hover:opacity-100" />
+            
+            {/* Active Progress Bar */}
+            {index === selectedIndex && (
+              <div 
+                className="absolute inset-y-0 left-0 bg-white animate-[progress_5s_linear_forwards]"
+                style={{ 
+                  animationPlayState: isHovered ? 'paused' : 'running'
+                }}
+              />
+            )}
+            
+            {/* Completed Progress Bars (so they stay white if you swipe fast, optional, but Xiaomi only animates active) */}
+            {/* For exact Xiaomi style, inactive bars are just gray, active fills up. */}
+          </button>
+        ))}
+      </div>
+
+      {/* Add custom keyframes for the progress animation */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes progress {
+          0% { width: 0%; }
+          100% { width: 100%; }
+        }
+      `}} />
     </section>
   );
 }

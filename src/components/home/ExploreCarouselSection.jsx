@@ -12,80 +12,67 @@ function CarouselCard({ card }) {
   const addToCartMutation = useAddToCart();
   const router = useRouter();
 
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-    addToCartMutation.mutate({ product_id: card.id, quantity: 1 });
-  };
+  const oldPriceFormatted = card.originalPrice > card.rawPrice ? `₹${card.originalPrice.toLocaleString('en-IN')}` : null;
+  const discountPercent = card.originalPrice > card.rawPrice ? Math.round(((card.originalPrice - card.rawPrice) / card.originalPrice) * 100) : null;
 
   return (
-    <article className="group flex h-full w-full flex-col overflow-hidden rounded-[12px] border border-border bg-card transition-colors duration-300 hover:border-[#000]">
-      <Link href={card.href || '#'} className="relative block overflow-hidden border-b border-border bg-secondary">
-        <div className="relative aspect-[1.15/1] overflow-hidden">
-          <Image
-            src={card.image}
-            alt={card.alt}
-            fill
-            sizes="(min-width: 1536px) 24vw, (min-width: 1280px) 32vw, (min-width: 1024px) 33vw, (min-width: 640px) 48vw, 90vw"
-            className={`object-contain p-8  transition-transform duration-700 ease-out group-hover:scale-[1.04] ${card.imageClassName || ''}`}
-          />
-        </div>
-      </Link>
+    <article className="group relative bg-white transition-all hover:shadow-[0_15px_30px_rgba(0,0,0,0.1)] hover:-translate-y-1 cursor-pointer flex flex-col p-3 sm:p-6 h-full min-h-[300px] sm:min-h-[400px] rounded-lg overflow-hidden border border-[#e5e5e5]">
+      
+      {/* Top Left Badge */}
+      <div className="absolute top-2 left-2 sm:top-4 sm:left-4 z-20">
+        {discountPercent ? (
+          <span className="border border-[#ff6900] text-[#ff6900] text-[10px] sm:text-[12px] px-1 py-0.5 rounded-sm bg-white">
+            {discountPercent}% off
+          </span>
+        ) : card.isNew ? (
+          <span className="border border-[#ff6900] text-[#ff6900] text-[10px] sm:text-[12px] px-1 py-0.5 rounded-sm bg-white">
+            New
+          </span>
+        ) : null}
+      </div>
 
-      <div className="flex flex-1 flex-col px-5 py-5 sm:px-6 sm:py-6">
-        <div className="min-h-14 flex-1">
-          <Link href={card.href || '#'}>
-            <h4 className="text-[20px] font-medium leading-snug text-foreground transition-opacity hover:opacity-70">
-              {card.title}
-            </h4>
-          </Link>
-          {card.description ? (
-            <p className="mt-1.5 max-w-[28rem] text-[14px] leading-relaxed text-muted-foreground line-clamp-2">{card.description}</p>
-          ) : null}
-          {card.price ? (
-            <div className="mt-3 flex items-center gap-2">
-              <h6 className="font-mono text-[16px] font-medium text-foreground">{card.price}</h6>
-              {card.originalPrice > card.rawPrice && (
-                <>
-                  <p className="font-mono text-[14px] text-muted-foreground line-through">₹{card.originalPrice.toLocaleString('en-IN')}</p>
-                  <span className="rounded-sm bg-red-50 px-1.5 py-0.5 font-sans text-[11px] font-bold text-red-600">
-                    −{Math.round(((card.originalPrice - card.rawPrice) / card.originalPrice) * 100)}%
-                  </span>
-                </>
-              )}
-            </div>
-          ) : null}
+      <div className="relative w-full h-[150px] sm:h-[180px] md:h-[220px] mb-4 sm:mb-6">
+        <Link href={card.href || '#'} className="absolute inset-0 z-10" />
+        <Image 
+          src={card.image} 
+          alt={card.alt} 
+          fill 
+          sizes="(min-width: 1280px) 24vw, (min-width: 1024px) 32vw, 48vw"
+          className="object-contain object-center transition-transform duration-500 group-hover:scale-105" 
+        />
+      </div>
+
+      <div className="flex flex-col items-center text-center z-10 flex-grow">
+        <h3 className="text-[16px] sm:text-[18px] md:text-[20px] font-medium text-[#333] mb-1 sm:mb-2 truncate w-full px-1 sm:px-2">{card.title}</h3>
+        
+        <div className="flex items-center gap-1 sm:gap-2 mb-2 sm:mb-4">
+          <span className="text-[14px] sm:text-[16px] text-[#333]">{card.price}</span>
+          {oldPriceFormatted && <span className="text-[12px] sm:text-[14px] text-[#b0b0b0] line-through">{oldPriceFormatted}</span>}
         </div>
 
-        {card.hideLinks !== true && (
-          <div className="mt-4 flex flex-row gap-2 border-t border-border pt-4">
-            {(card.links?.length ? card.links : [{ label: 'Know more', href: card.href }]).map((linkItem) => {
-              if (linkItem.action === 'add_to_cart') {
-                return (
-                  <button
-                    key={`${card.title}-${linkItem.label}`}
-                    onClick={handleAddToCart}
-                    disabled={addToCartMutation.isPending}
-                    className="flex h-9 flex-1 items-center justify-center rounded-full bg-black px-2 font-sans text-[13px] sm:text-[14px] font-medium text-white transition-colors hover:bg-[#090909] disabled:opacity-50"
-                  >
-                    {addToCartMutation.isPending ? 'Adding…' : linkItem.label}
-                  </button>
-                );
-              }
-              return (
-                <button
-                  key={`${card.title}-${linkItem.label}-${linkItem.href}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push(linkItem.href);
-                  }}
-                  className="flex h-9 flex-1 items-center justify-center rounded-full border border-[#d4d4d4] bg-white px-2 font-sans text-[13px] sm:text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa]"
-                >
-                  {linkItem.label}
-                </button>
-              );
-            })}
-          </div>
-        )}
+        <div className="flex flex-row gap-2 w-full justify-center mt-auto relative z-20">
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              addToCartMutation.mutate({ product_id: card.id, quantity: 1 });
+            }}
+            disabled={addToCartMutation.isPending}
+            className="flex-1 bg-[#222] text-white text-[11px] sm:text-[13px] px-2 sm:px-4 py-1.5 rounded-md hover:bg-black transition-colors whitespace-nowrap overflow-hidden text-ellipsis"
+          >
+            {addToCartMutation.isPending ? 'Adding...' : 'Add to cart'}
+          </button>
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              router.push(card.href);
+            }}
+            className="flex-1 bg-white text-black border border-gray-400 text-[11px] sm:text-[13px] px-2 sm:px-4 py-1.5 rounded-md hover:border-black transition-colors whitespace-nowrap overflow-hidden text-ellipsis"
+          >
+            Know more
+          </button>
+        </div>
       </div>
     </article>
   );
@@ -126,7 +113,7 @@ export default function ExploreCarouselSection({
   };
 
   return (
-    <section className={`${sectionClassName || ''} tick-track overflow-x-hidden bg-background py-14 sm:py-16 lg:py-20`}>
+    <section className={`${sectionClassName || ''} tick-track overflow-x-hidden py-14 sm:py-16 lg:py-20`} style={{ backgroundColor: '#f5f5f5' }}>
       <div ref={containerRef} className="mx-auto mb-8 max-w-[1600px] px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">

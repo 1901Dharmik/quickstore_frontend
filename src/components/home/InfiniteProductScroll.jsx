@@ -66,7 +66,7 @@ export function InfiniteProductScroll() {
   }) || [];
 
   return (
-    <section className="tick-track bg-background py-14 sm:py-16 lg:py-20">
+    <section className="tick-track py-14 sm:py-16 lg:py-20" style={{ backgroundColor: "#f5f5f5"}}>
       <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8">
         <div className="mb-10 text-center sm:mb-12">
           <h2 className="font-display text-[30px] font-medium tracking-tight text-foreground sm:text-[36px]">
@@ -84,82 +84,70 @@ export function InfiniteProductScroll() {
         )}
 
         <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
-          {products.map((product, i) => (
-            <article
-              key={`${product.id}-${i}`}
-              className="group flex h-full w-full flex-col overflow-hidden rounded-[12px] border border-border bg-card transition-colors duration-300 hover:border-[#000]"
-            >
-              <div className="relative block overflow-hidden border-b border-border bg-secondary">
-                <div className="pointer-events-none absolute left-2 top-2 z-10 flex flex-col gap-1.5 sm:left-3 sm:top-3">
-                  {product.bestSeller && (
-                    <span className="rounded-full bg-primary px-3 py-1 font-sans text-[12px] font-medium text-primary-foreground shadow-sm">
-                      Bestseller
+          {products.map((product, i) => {
+            const discountPercent = product.originalPrice > product.price 
+              ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) 
+              : null;
+
+            return (
+              <article key={`${product.id}-${i}`} className="group relative bg-white transition-all hover:shadow-[0_15px_30px_rgba(0,0,0,0.1)] hover:-translate-y-1 cursor-pointer flex flex-col p-3 sm:p-6 min-h-[300px] sm:min-h-[400px] h-full rounded-[0px] overflow-hidden rounded-lg">
+                
+                {/* Top Left Badge */}
+                <div className="absolute top-2 left-2 sm:top-4 sm:left-4 z-20">
+                  {discountPercent ? (
+                    <span className="border border-[#ff6900] text-[#ff6900] text-[10px] sm:text-[12px] px-1 py-0.5 rounded-sm bg-white">
+                      {discountPercent}% off
                     </span>
-                  )}
-                  {product.newArrival && (
-                    <span className="rounded-full border border-border bg-background px-3 py-1 font-sans text-[12px] font-medium text-foreground shadow-sm">
-                      New
-                    </span>
-                  )}
+                  ) : null}
                 </div>
 
-                <Link href={product.href} className="relative block">
-                  <div className="relative aspect-square overflow-hidden sm:aspect-[1.15/1]">
-                    <Image
-                      src={product.image}
-                      alt={product.alt}
-                      fill
-                      sizes="(min-width: 1280px) 24vw, (min-width: 1024px) 32vw, 48vw"
-                      className="object-contain p-5  transition-transform duration-700 ease-out group-hover:scale-[1.04] sm:p-7"
-                    />
-                  </div>
-                </Link>
-              </div>
+                <div className="relative w-full h-[150px] sm:h-[180px] md:h-[220px] mb-4 sm:mb-6">
+                  <Link href={product.href} className="absolute inset-0 z-10" />
+                  <Image 
+                    src={product.image} 
+                    alt={product.alt} 
+                    fill 
+                    className="object-contain object-center transition-transform duration-500 group-hover:scale-105" 
+                  />
+                </div>
 
-              <div className="flex flex-1 flex-col px-3.5 py-3.5 sm:px-5 sm:py-5">
-                <div className="min-h-10 flex-1">
-                  <Link href={product.href}>
-                    <h4 className="mb-2 text-[18px] font-medium leading-snug text-foreground transition-opacity hover:opacity-70">
-                      {product.title}
-                    </h4>
-                  </Link>
-                  <div className="flex items-center gap-2">
-                    <h6 className="font-mono text-[16px] font-medium text-foreground">₹{product.price.toLocaleString('en-IN')}</h6>
-                    {product.originalPrice > product.rawPrice && (
-                      <>
-                        <p className="font-mono text-[14px] text-muted-foreground line-through">₹{product.originalPrice.toLocaleString('en-IN')}</p>
-                        <span className="rounded-sm bg-red-50 px-1.5 py-0.5 font-sans text-[11px] font-bold text-red-600">
-                          −{Math.round(((product.originalPrice - product.rawPrice) / product.originalPrice) * 100)}%
-                        </span>
-                      </>
+                <div className="flex flex-col items-center text-center z-10 flex-grow">
+                  <h3 className="text-[16px] sm:text-[18px] md:text-[20px] font-medium text-[#333] mb-1 sm:mb-2 truncate w-full px-1 sm:px-2">{product.title}</h3>
+                  
+                  <div className="flex items-center gap-1 sm:gap-2 mb-2 sm:mb-4">
+                    <span className="text-[14px] sm:text-[16px] text-[#333]">₹{product.price.toLocaleString('en-IN')}</span>
+                    {product.originalPrice > product.price && (
+                      <span className="text-[12px] sm:text-[14px] text-[#b0b0b0] line-through">₹{product.originalPrice.toLocaleString('en-IN')}</span>
                     )}
                   </div>
-                </div>
 
-                <div className="mt-3 flex flex-row gap-2 border-t border-border pt-3">
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      addToCartMutation.mutate({ product_id: product.id, quantity: 1 });
-                    }}
-                    disabled={addToCartMutation.isPending}
-                    className="flex h-9 flex-1 items-center justify-center rounded-full bg-black px-2 font-sans text-[13px] sm:text-[14px] font-medium text-white transition-colors hover:bg-[#090909] disabled:opacity-50"
-                  >
-                    {addToCartMutation.isPending ? 'Adding…' : 'Add to cart'}
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      router.push(product.href);
-                    }}
-                    className="hidden md:block flex h-9 flex-1 items-center justify-center rounded-full border border-[#d4d4d4] bg-white px-2 font-sans text-[13px] sm:text-[14px] font-medium text-black transition-colors hover:bg-[#fafafa]"
-                  >
-                    Know more
-                  </button>
+                  <div className="flex flex-col sm:flex-row gap-2 w-full justify-center mt-auto relative z-20">
+                    <button 
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        addToCartMutation.mutate({ product_id: product.id, quantity: 1 });
+                      }}
+                      disabled={addToCartMutation.isPending}
+                      className="bg-[#222] text-white text-[12px] sm:text-[13px] px-3 sm:px-4 py-1.5 rounded-md hover:bg-black transition-colors w-full sm:w-max"
+                    >
+                      {addToCartMutation.isPending ? 'Adding...' : 'Add to cart'}
+                    </button>
+                    <button 
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        router.push(product.href);
+                      }}
+                      className="hidden sm:inline-block bg-white text-black border border-gray-400 text-[12px] sm:text-[13px] px-3 sm:px-4 py-1.5 rounded-md hover:border-black transition-colors w-max"
+                    >
+                      Know more
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
 
         {(isPending || isFetchingNextPage) && (

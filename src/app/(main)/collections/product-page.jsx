@@ -261,18 +261,18 @@ export default function ProductPage({ productId, initialData }) {
             )}
 
             {/* CTA */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-8">
+            <div className="flex flex-row gap-2 sm:gap-4 pt-8 w-full lg:w-max">
               <button
                 onClick={handleAddToCart}
                 disabled={stock === 0 || addToCartMutation.isPending}
-                className="flex h-[60px] flex-1 items-center justify-center rounded-full bg-[#222] px-8 font-sans text-[16px] font-medium text-white transition-opacity hover:bg-black disabled:cursor-not-allowed disabled:opacity-40"
+                className="flex flex-1 lg:flex-none lg:w-[160px] items-center justify-center rounded-md bg-[#222] px-2 sm:px-6 py-2.5 sm:py-3 font-sans text-[13px] sm:text-[14px] font-medium text-white transition-opacity hover:bg-black disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {addToCartMutation.isPending ? 'Adding...' : (stock > 0 ? 'Add to cart' : 'Out of stock')}
               </button>
               <button
                 onClick={handleBuyNow}
                 disabled={stock === 0 || addToCartMutation.isPending}
-                className="flex h-[60px] flex-1 items-center justify-center rounded-full bg-[#f5f5f5] px-8 font-sans text-[16px] font-medium text-black transition-colors hover:bg-[#e5e5e5] disabled:cursor-not-allowed disabled:opacity-40"
+                className="flex flex-1 lg:flex-none lg:w-[160px] items-center justify-center rounded-md bg-white border border-gray-400 px-2 sm:px-6 py-2.5 sm:py-3 font-sans text-[13px] sm:text-[14px] font-medium text-black transition-colors hover:border-black disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Buy now
               </button>

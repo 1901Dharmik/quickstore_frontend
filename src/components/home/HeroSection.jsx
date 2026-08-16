@@ -37,9 +37,9 @@ const SLIDES = [
     imageDesktop: 'https://i03.appmifile.com/746_operator_in/31/10/2025/142dc46d9468f897fb5e35ec682d5a41.jpg?thumb=1&w=5120&f=webp&q=85',
     imageMobile: 'https://i03.appmifile.com/746_operator_in/31/10/2025/142dc46d9468f897fb5e35ec682d5a41.jpg?thumb=1&w=5120&f=webp&q=85',
     link: '/shop',
-    align: 'center', // Just to show variety like Mi sometimes does
-    color: 'text-black',
-    overlay: 'bg-white/20',
+    align: 'left', // Changed from center to match others
+    color: 'text-white',
+    overlay: 'bg-black/30',
   },
 ];
 
@@ -69,7 +69,7 @@ export function HeroSection() {
 
   return (
     <section 
-      className="relative w-full h-[520px] md:h-[476px] overflow-hidden bg-black"
+      className="relative w-full h-[520px] md:h-[326px] overflow-hidden bg-black"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -119,7 +119,7 @@ export function HeroSection() {
                   
                   <Link 
                     href={slide.link}
-                    className="inline-flex h-[36px] md:h-[40px] items-center justify-center rounded-xl bg-[#262626] hover:bg-[#404040] text-white px-6 md:px-8 font-sans text-[14px] transition-colors"
+                    className="inline-flex h-[36px] md:h-[40px] items-center justify-center rounded-lg bg-[#262626] hover:bg-[#404040] text-white px-6 md:px-8 font-sans text-[14px] transition-colors"
                   >
                     Learn more
                   </Link>

@@ -257,7 +257,7 @@ export default function ProductPage({ productId, initialData }) {
             </div>
 
             {/* CTAs */}
-            <div className="flex flex-col gap-3 pt-4 sm:flex-row">
+            <div className="flex flex-row gap-3 pt-4">
               <button
                 onClick={handleAddToCart}
                 disabled={stock === 0 || addToCartMutation.isPending}

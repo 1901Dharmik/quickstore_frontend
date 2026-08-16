@@ -10,7 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export function CategorySection() {
   const scrollRef = useRef(null);
-  
+
   const { data: fetched = [], isPending, isError } = useQuery({
     queryKey: ['categories'],
     queryFn: () => fetchCategories(),
@@ -59,9 +59,9 @@ export function CategorySection() {
   });
 
   return (
-    <section className="bg-[#f5f5f5] py-14 sm:py-16 lg:py-20 overflow-hidden">
+    <section className="bg-[#f5f5f5] py-14 sm:py-16 overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         <div className="flex items-end justify-between mb-8">
           <div className="max-w-2xl">
             <h2 className="font-display text-[26px] font-medium tracking-tight text-foreground sm:text-[32px]">
@@ -72,13 +72,13 @@ export function CategorySection() {
             </p>
           </div>
           <div className="hidden sm:flex items-center gap-2">
-            <button 
+            <button
               onClick={() => scroll('left')}
               className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-white transition-colors"
             >
               <ChevronLeft className="w-5 h-5 text-gray-600" />
             </button>
-            <button 
+            <button
               onClick={() => scroll('right')}
               className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center hover:bg-white transition-colors"
             >
@@ -87,17 +87,17 @@ export function CategorySection() {
           </div>
         </div>
 
-        <div 
+        <div
           ref={scrollRef}
           className="flex gap-4 sm:gap-6 overflow-x-auto pb-8 snap-x snap-mandatory scroll-smooth no-scrollbar"
         >
           {categories.map((category) => (
-            <Link 
-              key={category.id} 
+            <Link
+              key={category.id}
               href={category.href}
               className="group relative flex-shrink-0 w-[200px] sm:w-[240px] snap-start rounded-lg overflow-hidden bg-white hover:shadow-lg transition-all duration-300 block"
             >
-              <div className="relative h-[200px] sm:h-[240px] w-full bg-[#f8f9fa]">
+              <div className="relative h-[180px] w-full bg-[#f8f9fa]">
                 <Image
                   src={category.image}
                   alt={category.title}
@@ -111,9 +111,9 @@ export function CategorySection() {
               </div>
             </Link>
           ))}
-          
+
           {/* Explore All Card */}
-          <Link 
+          <Link
             href="/collections"
             className="group relative flex-shrink-0 w-[200px] sm:w-[240px] snap-start rounded-xl overflow-hidden bg-white hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center"
           >

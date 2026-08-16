@@ -173,7 +173,7 @@ export default function ShopPage() {
       price: p.price || 0,
       originalPrice: p.compare_at_price || p.attributes?.compare_at_price || p.price || 0,
       thumbnail: p.images?.[0]?.url || 'https://images.unsplash.com/photo-1548171915-e79a380a2a4b?q=80&w=800',
-      category: p.categories?.[0]?.slug || 'uncategorized',
+      categories: p.categories?.map(c => c.slug) || ['uncategorized'],
       brandSlug: p.brand?.slug || 'generic',
     }));
   }, [rawProductsRes]);
@@ -199,7 +199,7 @@ export default function ShopPage() {
     const q = deferredSearch.trim().toLowerCase();
     const filtered = products.filter(p => {
       const matchSearch = !q || p.title.toLowerCase().includes(q);
-      const matchCat = category === 'all' || p.category === category;
+      const matchCat = category === 'all' || p.categories.includes(category);
       const matchBrand = brand === 'all' || p.brandSlug === brand;
       const matchPrice = matchesPriceBand(p.price, priceBand);
       return matchSearch && matchCat && matchBrand && matchPrice;

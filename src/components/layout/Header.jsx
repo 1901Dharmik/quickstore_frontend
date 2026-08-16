@@ -308,12 +308,41 @@ const Header = () => {
               {isSearching ? 'Searching...' : isError ? 'Search failed.' : 'No results found.'}
             </CommandEmpty>
 
+            {filteredCategories.length > 0 && (
+              <CommandGroup heading="Categories">
+                {filteredCategories.map((category) => (
+                  <CommandItem key={category.slug} value={`category-${category.title || category.name}`} onSelect={() => handleSelectCategory(category.slug)}>
+                    <div className="flex items-center gap-3">
+                      {category.image?.url ? (
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-md border border-[#e5e5e5] bg-[#fafafa]">
+                          <Image src={category.image.url} alt={category.title || category.name} width={32} height={32} className="h-full w-full object-cover" />
+                        </div>
+                      ) : (
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-[#e5e5e5] bg-[#fafafa]">
+                          <LayoutGrid className="h-4 w-4 opacity-50" />
+                        </div>
+                      )}
+                      <span className="font-medium">{category.title || category.name}</span>
+                    </div>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
+
             {filteredBrands.length > 0 && (
               <CommandGroup heading="Brands">
                 {filteredBrands.map((brand) => (
                   <CommandItem key={brand.slug} value={`brand-${brand.name}`} onSelect={() => handleSelectBrand(brand.slug)}>
-                    <div className="flex items-center gap-2">
-                      <Tag className="h-4 w-4 opacity-50" />
+                    <div className="flex items-center gap-3">
+                      {brand.image?.url ? (
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-md border border-[#e5e5e5] bg-[#fafafa] p-1">
+                          <Image src={brand.image.url} alt={brand.name} width={24} height={24} className="h-full w-full object-contain" />
+                        </div>
+                      ) : (
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-[#e5e5e5] bg-[#fafafa]">
+                          <Tag className="h-4 w-4 opacity-50" />
+                        </div>
+                      )}
                       <span className="font-medium">{brand.name}</span>
                     </div>
                   </CommandItem>
@@ -321,7 +350,6 @@ const Header = () => {
               </CommandGroup>
             )}
             
-            {/* Omitted the rest of the search results for brevity, but kept structure */}
             {searchResults.length > 0 && (
               <CommandGroup heading="Products">
                 {searchResults.map((product) => (
@@ -331,7 +359,17 @@ const Header = () => {
                     onSelect={() => handleSelectProduct(product.slug || product._id)}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-sm">{product.title}</span>
+                      {product.images?.[0]?.url ? (
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-md border border-[#e5e5e5] bg-[#fafafa]">
+                          <Image src={product.images[0].url} alt={product.title} width={40} height={40} className="h-full w-full object-cover" />
+                        </div>
+                      ) : (
+                        <div className="h-10 w-10 shrink-0 rounded-md bg-[#f5f5f5]" />
+                      )}
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium">{product.title}</span>
+                        {product.price && <span className="text-xs text-[#737373]">Rs. {product.price.toLocaleString('en-IN')}</span>}
+                      </div>
                     </div>
                   </CommandItem>
                 ))}

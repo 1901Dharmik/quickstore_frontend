@@ -1,5 +1,6 @@
 import { HeroSection } from '@/components/home/HeroSection';
 import { BrandSection } from '@/components/home/BrandSection';
+import { GenderCategorySection } from '@/components/home/GenderCategorySection';
 import { CategorySection } from '@/components/home/CategorySection';
 import { BestsellerSection } from '@/components/home/BestsellerSection';
 import { NewArrivalSection } from '@/components/home/NewArrivalSection';
@@ -40,6 +41,7 @@ const Page = () => {
     <main className="flex min-h-screen flex-col bg-background">
       <HeroSection />
       <BrandSection />
+      <GenderCategorySection />
       
       {/* Xiaomi Style Sections */}
       {/* <WatchTabbedSection />
